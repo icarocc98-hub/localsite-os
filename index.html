@@ -914,7 +914,7 @@ function cardHTML(b) {
   const addr = b.address
     ? `<span class="text-slate-300">${esc(b.address)}</span>`
     : `<span class="text-slate-500">Endereço não cadastrado no mapa.</span>${b.lat ? ` <button data-action="reverse" data-id="${b.id}" class="font-medium text-blue-300 underline underline-offset-2 hover:text-blue-200">Descobrir pelo mapa</button>` : ''}`;
-  return `<article class="card-in glass flex flex-col gap-4 rounded-2xl p-5 transition hover:border-violet-400/30 hover:bg-white/[0.04]">
+  return `<article class="card-in glass flex flex-col gap-4 rounded-2xl p-5 transition hover:border-green-400/30 hover:bg-white/[0.04]">
     <div class="flex items-start gap-3">
       <div class="grid h-12 w-12 flex-none place-items-center rounded-xl text-2xl" style="background:linear-gradient(135deg,${rgba(n.c1, 0.28)},${rgba(n.c2, 0.28)});box-shadow:inset 0 0 0 1px ${rgba(n.c1, 0.35)}">${n.emoji}</div>
       <div class="min-w-0 flex-1">
@@ -925,13 +925,13 @@ function cardHTML(b) {
     </div>
     <ul class="space-y-2.5 text-sm">
       <li class="flex gap-2.5"><i data-lucide="map-pin" class="mt-0.5 h-4 w-4 flex-none text-blue-400"></i><div>${addr}</div></li>
-      <li class="flex gap-2.5"><i data-lucide="phone" class="mt-0.5 h-4 w-4 flex-none text-violet-400"></i>${b.phone ? `<a href="tel:+${tel}" class="text-slate-200 hover:text-white">${esc(formatPhone(b.phone))}</a>` : '<span class="text-slate-500">Telefone não informado</span>'}</li>
+      <li class="flex gap-2.5"><i data-lucide="phone" class="mt-0.5 h-4 w-4 flex-none text-green-400"></i>${b.phone ? `<a href="tel:+${tel}" class="text-slate-200 hover:text-white">${esc(formatPhone(b.phone))}</a>` : '<span class="text-slate-500">Telefone não informado</span>'}</li>
       <li class="flex gap-2.5"><i data-lucide="star" class="mt-0.5 h-4 w-4 flex-none text-amber-400"></i>${b.rating ? `<span><b class="text-amber-200">${esc(b.rating)}</b> <span class="tracking-tight text-amber-300/90">${stars(b.rating)}</span>${b.reviews ? ` <span class="text-slate-500">(${esc(b.reviews)} avaliações)</span>` : ''}</span>` : '<span class="text-slate-500">Sem avaliações públicas</span>'}</li>
       ${b.hours ? `<li class="flex gap-2.5"><i data-lucide="clock" class="mt-0.5 h-4 w-4 flex-none text-slate-500"></i><span class="text-slate-400">${esc(ptHours(b.hours))}</span></li>` : ''}
     </ul>
     <div>
       <div class="mb-1.5 flex justify-between font-mono text-[10.5px] uppercase tracking-wider"><span class="text-slate-500">Oportunidade</span><span class="${scColor}">${scLabel} · ${sc}%</span></div>
-      <div class="h-1.5 overflow-hidden rounded-full bg-white/[0.06]"><div class="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500" style="width:${sc}%"></div></div>
+      <div class="h-1.5 overflow-hidden rounded-full bg-white/[0.06]"><div class="h-full rounded-full bg-gradient-to-r from-green-500 to-green-500" style="width:${sc}%"></div></div>
     </div>
     <div class="mt-auto grid grid-cols-2 gap-2">
       <button class="btn btn-primary btn-sm" data-action="demo" data-id="${b.id}"><i data-lucide="wand-sparkles" class="h-4 w-4"></i>Gerar Site Demo</button>
@@ -1436,7 +1436,7 @@ function waUrl(text, mobile) {
 
 function renderTemplates() {
   const v = waVars();
-  const colors = ['from-blue-500/25 to-blue-500/5 text-blue-200', 'from-violet-500/25 to-violet-500/5 text-violet-200', 'from-fuchsia-500/25 to-fuchsia-500/5 text-fuchsia-200', 'from-emerald-500/25 to-emerald-500/5 text-emerald-200'];
+  const colors = ['from-blue-500/25 to-blue-500/5 text-blue-200', 'from-green-500/25 to-green-500/5 text-green-200', 'from-fuchsia-500/25 to-fuchsia-500/5 text-fuchsia-200', 'from-emerald-500/25 to-emerald-500/5 text-emerald-200'];
   $('#templates').innerHTML = TEMPLATES.map((t, i) => {
     const msg = t.build(v);
     return `<div class="card-in glass flex flex-col gap-3 rounded-2xl p-4 sm:p-5">
@@ -1590,7 +1590,7 @@ function statusSelect(l, extra = '!w-auto') {
 function leadCard(l) {
   const n = nicheOf(l.nicheKey);
   const tel = waDigits(l.phone);
-  return `<div draggable="true" data-lead="${esc(l.id)}" class="card-in group cursor-grab rounded-xl border border-white/[0.07] bg-ink-850/80 p-3.5 transition hover:border-violet-400/30 active:cursor-grabbing">
+  return `<div draggable="true" data-lead="${esc(l.id)}" class="card-in group cursor-grab rounded-xl border border-white/[0.07] bg-ink-850/80 p-3.5 transition hover:border-green-400/30 active:cursor-grabbing">
     <div class="flex items-start gap-2.5">
       <span class="grid h-9 w-9 flex-none place-items-center rounded-lg text-lg" style="background:linear-gradient(135deg,${rgba(n.c1, 0.28)},${rgba(n.c2, 0.28)})">${n.emoji}</span>
       <div class="min-w-0 flex-1">
@@ -1600,7 +1600,7 @@ function leadCard(l) {
       ${l.value ? `<span class="flex-none rounded-md bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[10px] text-emerald-300">${brl(l.value)}</span>` : ''}
     </div>
     <div class="mt-2.5 space-y-1 text-xs">
-      ${l.phone ? `<a href="tel:+${tel}" class="flex items-center gap-1.5 text-slate-300 hover:text-white"><i data-lucide="phone" class="h-3 w-3 text-violet-400"></i>${esc(formatPhone(l.phone))}</a>` : '<p class="flex items-center gap-1.5 text-slate-500"><i data-lucide="phone-off" class="h-3 w-3"></i>Sem telefone</p>'}
+      ${l.phone ? `<a href="tel:+${tel}" class="flex items-center gap-1.5 text-slate-300 hover:text-white"><i data-lucide="phone" class="h-3 w-3 text-green-400"></i>${esc(formatPhone(l.phone))}</a>` : '<p class="flex items-center gap-1.5 text-slate-500"><i data-lucide="phone-off" class="h-3 w-3"></i>Sem telefone</p>'}
       ${l.notes ? `<p class="line-clamp-2 rounded-md bg-white/[0.03] px-2 py-1.5 text-slate-400">${esc(l.notes)}</p>` : ''}
     </div>
     <div class="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5">
@@ -1624,7 +1624,7 @@ function renderCRM() {
   const pipeline = all.filter((l) => l.status !== 'fechado').reduce((s, l) => s + (Number(l.value) || 0), 0);
   const stats = [
     ['users', 'Total de leads', all.length, 'text-white'],
-    ['message-circle', 'Contatados', by('contatado').length, 'text-violet-300'],
+    ['message-circle', 'Contatados', by('contatado').length, 'text-green-300'],
     ['file-text', 'Propostas', by('proposta').length, 'text-amber-300'],
     ['badge-check', 'Fechados', closed.length, 'text-emerald-300'],
     ['trending-up', 'Conversão', conv + '%', 'text-blue-300'],
@@ -1636,7 +1636,7 @@ function renderCRM() {
   const list = crmFiltered();
   const board = $('#crmBoard');
   if (!all.length) {
-    board.innerHTML = `<div class="glass rounded-2xl p-10 text-center"><div class="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-violet-500/15 ring-1 ring-violet-400/30"><i data-lucide="inbox" class="h-6 w-6 text-violet-300"></i></div><h3 class="font-bold text-white">Nenhum lead salvo ainda</h3><p class="mt-1 text-sm text-slate-400">Salve negócios a partir da Prospecção ou adicione um lead manualmente.</p><div class="mt-5 flex justify-center gap-2"><button class="btn btn-primary btn-sm" data-action="goto" data-goto="prospect"><i data-lucide="search" class="h-4 w-4"></i>Prospectar</button><button class="btn btn-ghost btn-sm" data-action="lead-new"><i data-lucide="plus" class="h-4 w-4"></i>Novo lead</button></div></div>`;
+    board.innerHTML = `<div class="glass rounded-2xl p-10 text-center"><div class="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-green-500/15 ring-1 ring-green-400/30"><i data-lucide="inbox" class="h-6 w-6 text-green-300"></i></div><h3 class="font-bold text-white">Nenhum lead salvo ainda</h3><p class="mt-1 text-sm text-slate-400">Salve negócios a partir da Prospecção ou adicione um lead manualmente.</p><div class="mt-5 flex justify-center gap-2"><button class="btn btn-primary btn-sm" data-action="goto" data-goto="prospect"><i data-lucide="search" class="h-4 w-4"></i>Prospectar</button><button class="btn btn-ghost btn-sm" data-action="lead-new"><i data-lucide="plus" class="h-4 w-4"></i>Novo lead</button></div></div>`;
     icons(); return;
   }
   if (state.crmView === 'kanban') {
