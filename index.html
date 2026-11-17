@@ -1561,11 +1561,32 @@ function saveAll() {
   renderResults();
 }
 
-function setLeadStatus(id, status) {
+async function setLeadStatus(id, status) {
   const l = state.leads.find((x) => x.id === id);
   if (!l || l.status === status) return;
-  l.status = status; l.updatedAt = new Date().toISOString();
-  persist(LS_LEADS, state.leads); renderCRM();
+
+  l.status = status;
+  l.updatedAt = new Date().toISOString();
+
+  persist(LS_LEADS, state.leads);
+  renderCRM();
+
+  if (currentUser) {
+    const { error } = await supabaseClient
+      .from('leads')
+      .update({
+        status: l.status,
+        updated_at: l.updatedAt
+      })
+      .eq('id', l.id)
+      .eq('owner_id', currentUser.id);
+
+    if (error) {
+      toast('Erro ao atualizar na nuvem: ' + error.message, 'err');
+      return;
+    }
+  }
+
   toast(`${l.name} → ${STATUSES.find((s) => s.k === status).label}`, status === 'fechado' ? 'ok' : 'info');
 }
 
