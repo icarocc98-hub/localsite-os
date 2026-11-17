@@ -804,7 +804,8 @@ function mapElement(el, nicheKey, city, uf) {
     hours: t.opening_hours || '',
     instagram: t['contact:instagram'] || t.instagram || '',
     lat, lon, osmUrl: `https://www.openstreetmap.org/${el.type}/${el.id}`,
-    source: 'osm',
+    website: t.website || t['contact:website'] || t.url || '',
+source: 'osm',
   };
 }
 
