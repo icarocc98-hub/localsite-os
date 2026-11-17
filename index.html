@@ -1732,7 +1732,7 @@ function exportCSV() {
   ];
   const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const rows = [cols.map((c) => q(c[0])).join(';'), ...state.leads.map((l) => cols.map((c) => q(c[1](l))).join(';'))];
-  downloadFile('\uFEFF' + rows.join('\r\n'), `leads-localsite-os-${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv;charset=utf-8');
+  downloadFile('\uFEFF' + rows.join('\r\n'), `leads-menuradar-ia-${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv;charset=utf-8');
   toast(`${state.leads.length} leads exportados em CSV`, 'ok');
 }
 
