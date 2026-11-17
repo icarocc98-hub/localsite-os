@@ -714,7 +714,6 @@ async function geocodeCity(city, uf) {
 }
 
 async function overpassSearch(place, niche) {
-  const useArea = place.osmType === 'relation';
   const [south, west, north, east] = place.bbox;
   const midLat = (south + north) / 2;
   const midLon = (west + east) / 2;
@@ -726,20 +725,14 @@ async function overpassSearch(place, niche) {
     [midLat, midLon, north, east]
   ];
 
-  const queries = areas.map(([s, w, n, e]) => {
-    const scope = useArea ? 'area.a' : `${s},${w},${n},${e}`;
-    const head = useArea
-      ? `area(id:${3600000000 + place.osmId})->.a;`
-      : '';
-    const body = niche.osm
-      .map(f => `nwr${f}["name"][!"website"][!"contact:website"][!"url"](${scope});`)
-      .join('\n');
-
-    return `[out:json][timeout:25];\n${head}\n(\n${body}\n);\nout center;`;
-  });
-
   const results = await Promise.all(
-    queries.map(async q => {
+    areas.map(async ([s, w, n, e]) => {
+      const body = niche.osm
+        .map(f => `nwr${f}["name"][!"website"][!"contact:website"][!"url"](${s},${w},${n},${e});`)
+        .join('\n');
+
+      const q = `[out:json][timeout:25];\n(\n${body}\n);\nout center;`;
+
       for (const ep of OVERPASS_ENDPOINTS) {
         try {
           const data = await fetchJSON(
@@ -751,15 +744,23 @@ async function overpassSearch(place, niche) {
             },
             35000
           );
-          if (data && Array.isArray(data.elements)) return data.elements;
+
+          if (data && Array.isArray(data.elements)) {
+            return data.elements;
+          }
         } catch (e) {}
       }
+
       return [];
     })
   );
 
   const unique = new Map();
-  results.flat().forEach(el => unique.set(`${el.type}-${el.id}`, el));
+
+  results.flat().forEach(el => {
+    unique.set(`${el.type}-${el.id}`, el);
+  });
+
   return [...unique.values()];
 }
 function mapElement(el, nicheKey, city, uf) {
