@@ -715,20 +715,53 @@ async function geocodeCity(city, uf) {
 
 async function overpassSearch(place, niche) {
   const useArea = place.osmType === 'relation';
-  const scope = useArea ? 'area.a' : place.bbox.join(',');
-  const head = useArea ? `area(id:${3600000000 + place.osmId})->.a;` : '';
-  const body = niche.osm.map((f) => `  nwr${f}["name"][!"website"][!"contact:website"][!"url"](${scope});`).join('\n');
-  const q = `[out:json][timeout:25];\n${head}\n(\n${body}\n);\nout center;`;
-  let lastErr;
-  for (const ep of OVERPASS_ENDPOINTS) {
-    try {
-      const d = await fetchJSON(ep, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 35000);
-      if (d && Array.isArray(d.elements)) return d.elements;
-    } catch (e) { lastErr = e; }
-  }
-  throw lastErr || new Error('Overpass indisponível');
-}
+  const [south, west, north, east] = place.bbox;
+  const midLat = (south + north) / 2;
+  const midLon = (west + east) / 2;
 
+  const areas = [
+    [south, west, midLat, midLon],
+    [south, midLon, midLat, east],
+    [midLat, west, north, midLon],
+    [midLat, midLon, north, east]
+  ];
+
+  const queries = areas.map(([s, w, n, e]) => {
+    const scope = useArea ? 'area.a' : `${s},${w},${n},${e}`;
+    const head = useArea
+      ? `area(id:${3600000000 + place.osmId})->.a;`
+      : '';
+    const body = niche.osm
+      .map(f => `nwr${f}["name"][!"website"][!"contact:website"][!"url"](${scope});`)
+      .join('\n');
+
+    return `[out:json][timeout:25];\n${head}\n(\n${body}\n);\nout center;`;
+  });
+
+  const results = await Promise.all(
+    queries.map(async q => {
+      for (const ep of OVERPASS_ENDPOINTS) {
+        try {
+          const data = await fetchJSON(
+            ep,
+            {
+              method: 'POST',
+              body: 'data=' + encodeURIComponent(q),
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            },
+            35000
+          );
+          if (data && Array.isArray(data.elements)) return data.elements;
+        } catch (e) {}
+      }
+      return [];
+    })
+  );
+
+  const unique = new Map();
+  results.flat().forEach(el => unique.set(`${el.type}-${el.id}`, el));
+  return [...unique.values()];
+}
 function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
   const lat = el.lat ?? el.center?.lat ?? null;
