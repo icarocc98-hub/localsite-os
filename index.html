@@ -1853,6 +1853,54 @@ function init() {
   icons();
 }
 document.addEventListener('DOMContentLoaded', init);
+const authScreen = document.getElementById('authScreen');
+const authForm = document.getElementById('authForm');
+const authMessage = document.getElementById('authMessage');
+const authSignup = document.getElementById('authSignup');
+
+function showAuthScreen(loggedIn) {
+  authScreen.style.display = loggedIn ? 'none' : 'block';
+  document.querySelectorAll('header, main').forEach(element => {
+    element.style.display = loggedIn ? '' : 'none';
+  });
+}
+
+authForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  authMessage.textContent = 'Entrando...';
+
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  authMessage.textContent = error
+    ? 'Erro: ' + error.message
+    : 'Login realizado!';
+});
+
+authSignup.addEventListener('click', async () => {
+  authMessage.textContent = 'Criando conta...';
+
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  const { error } = await supabaseClient.auth.signUp({
+    email,
+    password
+  });
+
+  authMessage.textContent = error
+    ? 'Erro: ' + error.message
+    : 'Conta criada! Confira seu e-mail, se for solicitado.';
+});
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  showAuthScreen(!!session);
+});
 </script>
 </body>
 </html>
