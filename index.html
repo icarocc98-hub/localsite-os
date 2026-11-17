@@ -821,7 +821,7 @@ async function searchBusinesses() {
     console.warn('[LocalSite OS] busca falhou:', err);
     const reason = err && err.name === 'AbortError' ? 'tempo de resposta esgotado' : (err && err.message) || 'erro desconhecido';
     state.results = []; state.isSample = false;
-    setStatus('warn', `Não foi possível obter dados reais agora (<i>${esc(reason)}</i>). Exibindo <b>dados de exemplo</b> para você testar a plataforma — tente novamente em instantes ou mude a cidade.`);
+    setStatus('warn', 'Não foi possível obter dados reais agora. Nenhum dado de exemplo será exibido. Tente novamente em instantes.');
   } finally {
     state.searching = false;
     btn.disabled = false;
