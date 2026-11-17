@@ -753,7 +753,7 @@ async function overpassSearch(place, niche) {
   const results = await Promise.all(
     areas.map(async ([s, w, n, e]) => {
       const body = niche.osm
-        .map(f => `nwr${f}["name"][!"website"][!"contact:website"][!"url"](${s},${w},${n},${e});`)
+        .map(f => `nwr${f}["name"](${s},${w},${n},${e});`)
         .join('\n');
 
       const q = `[out:json][timeout:15];\n(\n${body}\n);\nout center;`;
