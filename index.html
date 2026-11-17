@@ -740,55 +740,43 @@ async function geocodeCity(city, uf) {
 
 async function overpassSearch(place, niche) {
   const [south, west, north, east] = place.bbox;
-  const midLat = (south + north) / 2;
-  const midLon = (west + east) / 2;
 
-  const areas = [
-    [south, west, midLat, midLon],
-    [south, midLon, midLat, east],
-    [midLat, west, north, midLon],
-    [midLat, midLon, north, east]
-  ];
+  const body = niche.osm
+    .map(f => `nwr${f}["name"](${south},${west},${north},${east});`)
+    .join('\n');
 
-  const results = await Promise.all(
-    areas.map(async ([s, w, n, e]) => {
-      const body = niche.osm
-        .map(f => `nwr${f}["name"](${s},${w},${n},${e});`)
-        .join('\n');
+  const q = `[out:json][timeout:30];
+(
+${body}
+);
+out center;`;
 
-      const q = `[out:json][timeout:15];\n(\n${body}\n);\nout center;`;
+  let lastError = null;
 
-      for (const ep of OVERPASS_ENDPOINTS) {
-        try {
-          const data = await fetchJSON(
-            ep,
-            {
-              method: 'POST',
-              body: 'data=' + encodeURIComponent(q),
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            },
-            12000
-          );
+  for (const ep of OVERPASS_ENDPOINTS) {
+    try {
+      const data = await fetchJSON(
+        ep,
+        {
+          method: 'POST',
+          body: 'data=' + encodeURIComponent(q),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        },
+        35000
+      );
 
-          if (data && Array.isArray(data.elements)) {
-            return data.elements;
-          }
-        } catch (e) {}
+      if (data && Array.isArray(data.elements)) {
+        return data.elements;
       }
 
-      return [];
-    })
-  );
+      lastError = new Error('Resposta inválida do OpenStreetMap');
+    } catch (e) {
+      lastError = e;
+    }
+  }
 
-  const unique = new Map();
-
-  results.flat().forEach(el => {
-    unique.set(`${el.type}-${el.id}`, el);
-  });
-
-  return [...unique.values()];
+  throw lastError || new Error('Nenhum servidor do mapa respondeu');
 }
-function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
   const lat = el.lat ?? el.center?.lat ?? null;
   const lon = el.lon ?? el.center?.lon ?? null;
