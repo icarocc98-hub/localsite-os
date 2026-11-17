@@ -777,6 +777,7 @@ out center;`;
 
   throw lastError || new Error('Nenhum servidor do mapa respondeu');
 }
+  function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
   const lat = el.lat ?? el.center?.lat ?? null;
   const lon = el.lon ?? el.center?.lon ?? null;
