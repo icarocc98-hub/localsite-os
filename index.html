@@ -1590,11 +1590,28 @@ async function setLeadStatus(id, status) {
   toast(`${l.name} → ${STATUSES.find((s) => s.k === status).label}`, status === 'fechado' ? 'ok' : 'info');
 }
 
-function deleteLead(id) {
+async function deleteLead(id) {
   const l = state.leads.find((x) => x.id === id);
   if (!l || !confirm(`Remover "${l.name}" do CRM?`)) return;
+
+  if (currentUser) {
+    const { error } = await supabaseClient
+      .from('leads')
+      .delete()
+      .eq('id', l.id)
+      .eq('owner_id', currentUser.id);
+
+    if (error) {
+      toast('Erro ao excluir da nuvem: ' + error.message, 'err');
+      return;
+    }
+  }
+
   state.leads = state.leads.filter((x) => x.id !== id);
-  persist(LS_LEADS, state.leads); updateBadge(); renderCRM(); renderResults();
+  persist(LS_LEADS, state.leads);
+  updateBadge();
+  renderCRM();
+  renderResults();
   toast('Lead removido', 'info');
 }
 
