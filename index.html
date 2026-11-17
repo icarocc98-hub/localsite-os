@@ -788,55 +788,6 @@ async function overpassSearch(place, niche) {
 
   return [...unique.values()];
 }
-  const [south, west, north, east] = place.bbox;
-  const midLat = (south + north) / 2;
-  const midLon = (west + east) / 2;
-
-  const areas = [
-    [south, west, midLat, midLon],
-    [south, midLon, midLat, east],
-    [midLat, west, north, midLon],
-    [midLat, midLon, north, east]
-  ];
-
-  const results = await Promise.all(
-    areas.map(async ([s, w, n, e]) => {
-      const body = niche.osm
-        .map(f => `nwr${f}["name"][!"website"][!"contact:website"][!"url"](${s},${w},${n},${e});`)
-        .join('\n');
-
-      const q = `[out:json][timeout:25];\n(\n${body}\n);\nout center;`;
-
-      for (const ep of OVERPASS_ENDPOINTS) {
-        try {
-          const data = await fetchJSON(
-            ep,
-            {
-              method: 'POST',
-              body: 'data=' + encodeURIComponent(q),
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            },
-            35000
-          );
-
-          if (data && Array.isArray(data.elements)) {
-            return data.elements;
-          }
-        } catch (e) {}
-      }
-
-      return [];
-    })
-  );
-
-  const unique = new Map();
-
-  results.flat().forEach(el => {
-    unique.set(`${el.type}-${el.id}`, el);
-  });
-
-  return [...unique.values()];
-}
 function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
   const lat = el.lat ?? el.center?.lat ?? null;
