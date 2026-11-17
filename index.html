@@ -1481,8 +1481,41 @@ function onWaOpen(i) {
    Aba 4 — CRM
    ===================================================================== */
 function updateBadge() { $('#crmBadge').textContent = state.leads.length; }
+let currentUser = null;
 
-function saveLead(id, silent) {
+async function loadCloudLeads() {
+  if (!currentUser) return;
+
+  const { data, error } = await supabaseClient
+    .from('leads')
+    .select('*')
+    .eq('owner_id', currentUser.id);
+
+  if (error) {
+    toast('Erro ao carregar leads: ' + error.message, 'err');
+    return;
+  }
+
+  state.leads = (data || []).map(row => ({
+    id: row.id,
+    name: row.name,
+    nicheKey: row.niche_key || 'hamburgueria',
+    city: row.city || '',
+    uf: row.uf || '',
+    address: row.address || '',
+    phone: row.phone || '',
+    source: row.source || 'manual',
+    status: row.status || 'novo',
+    notes: row.notes || '',
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  }));
+
+  persist(LS_LEADS, state.leads);
+  updateBadge();
+  renderCRM();
+}
+  function saveLead(id, silent) {
   const b = findBiz(id);
   if (!b) return false;
   if (isSaved(id)) { if (!silent) toast('Esse negócio já está no CRM', 'info'); return false; }
@@ -1899,7 +1932,12 @@ authSignup.addEventListener('click', async () => {
 });
 
 supabaseClient.auth.onAuthStateChange((event, session) => {
+  currentUser = session?.user || null;
   showAuthScreen(!!session);
+
+  if (currentUser) {
+    setTimeout(() => loadCloudLeads(), 0);
+  }
 });
 </script>
 </body>
