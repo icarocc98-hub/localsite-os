@@ -1762,20 +1762,79 @@ function openLeadModal(id) {
     <div class="mt-5 flex justify-end gap-2"><button type="button" class="btn btn-ghost btn-sm" data-action="close-modal">Cancelar</button><button type="submit" class="btn btn-primary btn-sm"><i data-lucide="save" class="h-4 w-4"></i>Salvar lead</button></div>`, 'leadForm');
 }
 
-function submitLead(form) {
+async function submitLead(form) {
   const f = Object.fromEntries(new FormData(form).entries());
   const now = new Date().toISOString();
-  const data = { name: f.name.trim(), nicheKey: f.nicheKey, status: f.status, city: f.city.trim(), uf: f.uf, phone: f.phone.trim(), contact: f.contact.trim(), address: f.address.trim(), value: Number(f.value) || 0, notes: f.notes.trim(), updatedAt: now };
+
+  const data = {
+    name: f.name.trim(),
+    nicheKey: f.nicheKey,
+    status: f.status,
+    city: f.city.trim(),
+    uf: f.uf,
+    phone: f.phone.trim(),
+    contact: f.contact.trim(),
+    address: f.address.trim(),
+    value: Number(f.value) || 0,
+    notes: f.notes.trim(),
+    updatedAt: now
+  };
+
   if (!data.name) return toast('Informe o nome do negócio', 'warn');
+
+  const id = f.id || 'man-' + Date.now();
+
+  if (currentUser) {
+    const dbData = {
+      id,
+      name: data.name,
+      niche_key: data.nicheKey,
+      status: data.status,
+      city: data.city,
+      uf: data.uf,
+      phone: data.phone,
+      address: data.address,
+      notes: data.notes,
+      source: 'manual',
+      owner_id: currentUser.id,
+      updated_at: now
+    };
+
+    const { error } = f.id
+      ? await supabaseClient.from('leads').update(dbData).eq('id', id).eq('owner_id', currentUser.id)
+      : await supabaseClient.from('leads').insert(dbData);
+
+    if (error) {
+      toast('Erro ao salvar na nuvem: ' + error.message, 'err');
+      return;
+    }
+  }
+
   if (f.id) {
     const l = state.leads.find((x) => x.id === f.id);
-    Object.assign(l, data);
+    if (l) Object.assign(l, data);
     toast('Lead atualizado', 'ok');
   } else {
-    state.leads.unshift({ id: 'man-' + Date.now(), ...data, rating: '', reviews: '', hours: '', instagram: '', lat: null, lon: null, osmUrl: '', source: 'manual', createdAt: now });
+    state.leads.unshift({
+      id,
+      ...data,
+      rating: '',
+      reviews: '',
+      hours: '',
+      instagram: '',
+      lat: null,
+      lon: null,
+      osmUrl: '',
+      source: 'manual',
+      createdAt: now
+    });
     toast('Lead adicionado', 'ok');
   }
-  persist(LS_LEADS, state.leads); updateBadge(); closeModal(); renderCRM();
+
+  persist(LS_LEADS, state.leads);
+  updateBadge();
+  closeModal();
+  renderCRM();
 }
 
 function openSettings() {
