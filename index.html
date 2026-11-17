@@ -718,7 +718,7 @@ async function overpassSearch(place, niche) {
   const scope = useArea ? 'area.a' : place.bbox.join(',');
   const head = useArea ? `area(id:${3600000000 + place.osmId})->.a;` : '';
   const body = niche.osm.map((f) => `  nwr${f}["name"][!"website"][!"contact:website"][!"url"](${scope});`).join('\n');
-  const q = `[out:json][timeout:25];\n${head}\n(\n${body}\n);\nout center 120;`;
+  const q = `[out:json][timeout:25];\n${head}\n(\n${body}\n);\nout center;`;
   let lastErr;
   for (const ep of OVERPASS_ENDPOINTS) {
     try {
