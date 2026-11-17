@@ -652,6 +652,10 @@ function toast(msg, type = 'ok') {
 const LS_LEADS = 'localsite_os_leads_v1';
   const SUPABASE_URL = 'https://hnqzbsdpwnnblhzhfmyf.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_sfXMxzpz6x3HvBtLwcdc5Q_kU3v-0o_';
+  const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 const LS_SET = 'localsite_os_settings_v1';
 const LS_QUERY = 'localsite_os_query_v1';
 
