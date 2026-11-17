@@ -874,7 +874,8 @@ async function searchBusinesses() {
       const k = b.name.toLowerCase().trim() + '|' + (b.lat ? b.lat.toFixed(3) : '') ;
       if (seen.has(k)) return false; seen.add(k); return true;
     });
-    if (!items.length) throw new Error('nenhum estabelecimento sem site encontrado para esse nicho');
+    if (!els.length) throw new Error('OpenStreetMap retornou zero estabelecimentos. A consulta não encontrou dados.');
+if (!items.length) throw new Error(`Foram encontrados ${els.length} estabelecimentos, mas todos possuem site ou estão sem nome.`);
     state.results = items; state.isSample = false;
     setStatus('ok', `<b>${items.length}</b> ${esc(niche.plural)} sem site encontradas em <b>${esc(city)}/${uf}</b>. Fonte: OpenStreetMap.`);
   } catch (err) {
