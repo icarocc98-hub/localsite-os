@@ -741,64 +741,31 @@ async function geocodeCity(city, uf) {
 async function overpassSearch(place, niche) {
   const [south, west, north, east] = place.bbox;
 
-  const midLat = (south + north) / 2;
-  const midLon = (west + east) / 2;
-
-  const areas = [
-    [south, west, midLat, midLon],
-    [south, midLon, midLat, east],
-    [midLat, west, north, midLon],
-    [midLat, midLon, north, east]
-  ];
-
-  const body = niche.osm
-    .map(f => `nwr${f}`)
-    .join('\n');
-
-  const results = [];
-  const seen = new Set();
-  let lastError = null;
-
-  for (const area of areas) {
-    const q = `[out:json][timeout:12];
+  const q = `[out:json][timeout:15];
 (
-${niche.osm.map(f => `nwr${f}["name"](${area.join(',')});`).join('\n')}
+${niche.osm.map(f => `nwr${f}["name"](${south},${west},${north},${east});`).join('\n')}
 );
 out center;`;
 
-    let success = false;
+  const requests = OVERPASS_ENDPOINTS.map(async (ep) => {
+    const data = await fetchJSON(
+      ep,
+      {
+        method: 'POST',
+        body: 'data=' + encodeURIComponent(q),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      },
+      18000
+    );
 
-    for (const ep of OVERPASS_ENDPOINTS) {
-      try {
-        const data = await fetchJSON(
-          ep,
-          {
-            method: 'POST',
-            body: 'data=' + encodeURIComponent(q),
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-          },
-          15000
-        );
-
-        if (data && Array.isArray(data.elements)) {
-          for (const el of data.elements) {
-            const key = `${el.type}-${el.id}`;
-            if (!seen.has(key)) {
-              seen.add(key);
-              results.push(el);
-            }
-          }
-          success = true;
-          break;
-        }
-      } catch (e) {
-        lastError = e;
-      }
+    if (!data || !Array.isArray(data.elements)) {
+      throw new Error('Resposta inválida do OpenStreetMap');
     }
-  }
 
-  if (!results.length && lastError) throw lastError;
-  return results;
+    return data.elements;
+  });
+
+  return await Promise.any(requests);
 }
   function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
