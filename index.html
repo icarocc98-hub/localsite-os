@@ -1526,7 +1526,30 @@ async function loadCloudLeads() {
     lat: b.lat ?? null, lon: b.lon ?? null, osmUrl: b.osmUrl || '', source: b.source || 'manual',
     status: 'novo', value: Number(state.settings.price) || 0, notes: '', contact: '', createdAt: now, updatedAt: now,
   });
-  persist(LS_LEADS, state.leads); updateBadge();
+  persist(LS_LEADS, state.leads);
+updateBadge();
+
+if (currentUser) {
+  const lead = state.leads[0];
+
+  supabaseClient.from('leads').upsert({
+    id: lead.id,
+    name: lead.name,
+    niche_key: lead.nicheKey,
+    city: lead.city,
+    uf: lead.uf,
+    address: lead.address,
+    phone: lead.phone,
+    source: lead.source,
+    status: lead.status,
+    notes: lead.notes,
+    owner_id: currentUser.id,
+    created_at: lead.createdAt,
+    updated_at: lead.updatedAt
+  }, { onConflict: 'id' }).then(({ error }) => {
+    if (error) toast('Erro ao salvar no banco: ' + error.message, 'err');
+  });
+}
   if (!silent) toast(`${b.name} salvo no CRM`, 'ok');
   return true;
 }
