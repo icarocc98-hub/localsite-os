@@ -870,7 +870,7 @@ async function searchBusinesses() {
     const els = await overpassSearch(place, niche);
     const seen = new Set();
     const items = els.map((el) => mapElement(el, nicheKey, city, uf)).filter((b) => {
-      if (!b.name) return false;
+        if (!b.name || b.website) return false;
       const k = b.name.toLowerCase().trim() + '|' + (b.lat ? b.lat.toFixed(3) : '') ;
       if (seen.has(k)) return false; seen.add(k); return true;
     });
