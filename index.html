@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LocalSite OS — Prospecte negócios locais sem site</title>
+  <meta name="description" content="Encontre pequenos negócios locais sem site, gere sites demonstrativos, aborde pelo WhatsApp e gerencie seus leads em um CRM simples." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            ink: { 950: '#05060b', 900: '#0a0b14', 850: '#0e1020', 800: '#13152a', 700: '#1c1f3a' },
+          },
+        },
+      },
+    };
+  </script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style type="text/tailwindcss">
+    @layer components {
+      .field { @apply w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-violet-400/60 focus:ring-4 focus:ring-violet-500/15; }
+      .label { @apply mb-1.5 block font-mono text-[10.5px] font-medium uppercase tracking-[.14em] text-slate-400; }
+      .btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-50; }
+      .btn-primary { @apply bg-gradient-to-r from-blue-500 to-violet-600 text-white shadow-lg shadow-violet-900/40 hover:brightness-110; }
+      .btn-ghost { @apply border border-white/10 bg-white/[0.04] text-slate-200 hover:border-white/20 hover:bg-white/[0.08]; }
+      .btn-wa { @apply bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-emerald-900/40 hover:brightness-110; }
+      .btn-danger { @apply border border-rose-400/20 bg-rose-500/10 text-rose-200 hover:bg-rose-500/20; }
+      .btn-sm { @apply rounded-lg px-3 py-2 text-xs; }
+      .glass { @apply border border-white/[0.07] bg-white/[0.025] backdrop-blur-xl; }
+      .tab-btn { @apply relative flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium text-slate-400 transition hover:bg-white/[0.04] hover:text-white; }
+      .tab-btn.active { @apply bg-gradient-to-r from-blue-500/20 to-violet-500/20 text-white ring-1 ring-violet-400/30; }
+      .dev-btn { @apply inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-400 transition hover:text-white; }
+      .dev-btn.active { @apply bg-gradient-to-r from-blue-500 to-violet-600 text-white shadow; }
+      .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-slate-300 transition hover:border-violet-400/40 hover:text-white; }
+      .chip.active { @apply border-violet-400/50 bg-violet-500/15 text-white; }
+      .badge-red { @apply inline-flex flex-none items-center gap-1 rounded-md border border-rose-400/20 bg-rose-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-rose-200; }
+      .badge-amber { @apply inline-flex flex-none items-center gap-1 rounded-md border border-amber-400/20 bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-amber-200; }
+      .icon-btn { @apply grid h-7 w-7 flex-none place-items-center rounded-lg border border-white/10 bg-white/[0.03] text-slate-400 transition hover:border-white/20 hover:text-white; }
+    }
+  </style>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: #05060b; }
+    .grid-bg { background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(ellipse at top, #000 30%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at top, #000 30%, transparent 75%); }
+    .grad-text { background: linear-gradient(90deg, #60a5fa, #a78bfa 55%, #e879f9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    select.field, select.field option, select.field optgroup { background-color: #0e1020; color: #e2e8f0; }
+    input[type="color"] { -webkit-appearance: none; appearance: none; border: 0; padding: 0; background: none; cursor: pointer; }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 10px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { scrollbar-width: none; }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 10px; border: 2px solid #05060b; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .card-in { animation: cardIn .45s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .skeleton { position: relative; overflow: hidden; background: rgba(255,255,255,.04); border-radius: 10px; }
+    .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); animation: shimmer 1.4s infinite; }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+    .toast { animation: toastIn .3s ease both; }
+    .toast-out { animation: toastOut .3s ease both; }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+    @keyframes toastOut { to { opacity: 0; transform: translateY(8px); } }
+    .drop-hover { outline: 2px dashed rgba(167,139,250,.6); outline-offset: -4px; background: rgba(139,92,246,.06) !important; }
+    /* Device simulator */
+    #deviceShell { transition: width .35s ease, border-radius .35s ease, padding .35s ease; margin: 0 auto; position: relative; }
+    #deviceShell.desktop { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 40px 80px -40px rgba(0,0,0,.8); }
+    #deviceShell.mobile { width: 392px; max-width: 100%; height: 800px; border-radius: 54px; padding: 48px 12px 22px; background: linear-gradient(145deg, #23263a, #0b0c14); box-shadow: 0 0 0 2px #2c3047, 0 50px 90px -30px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,.06); }
+    #deviceShell .chrome { display: none; }
+    #deviceShell.desktop .chrome { display: flex; }
+    #deviceShell .notch { display: none; }
+    #deviceShell.mobile .notch { display: block; position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 96px; height: 22px; background: #000; border-radius: 20px; z-index: 5; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+    #preview { display: block; width: 100%; height: 700px; border: 0; background: #fff; }
+    #deviceShell.mobile #preview { height: 100%; border-radius: 22px; }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .modal-in { animation: modalIn .25s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+  </style>
+</head>
+<body class="min-h-screen font-sans text-slate-200 antialiased selection:bg-violet-500/30">
+  <!-- Fundo decorativo -->
+  <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -left-32 -top-40 h-[520px] w-[520px] rounded-full bg-blue-600/20 blur-[120px]"></div>
+    <div class="absolute -right-40 top-1/3 h-[560px] w-[560px] rounded-full bg-violet-600/20 blur-[130px]"></div>
+    <div class="absolute bottom-0 left-1/3 h-[380px] w-[380px] rounded-full bg-fuchsia-600/10 blur-[120px]"></div>
+    <div class="grid-bg absolute inset-0"></div>
+  </div>
+
+  <!-- Cabeçalho -->
+  <header class="sticky top-0 z-40 border-b border-white/[0.06] bg-ink-950/70 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <button data-goto="prospect" data-action="goto" class="flex items-center gap-3 text-left">
+        <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-blue-500 to-violet-600 shadow-lg shadow-violet-900/50"><i data-lucide="radar" class="h-5 w-5 text-white"></i></span>
+        <span class="leading-tight">
+          <span class="block text-base font-extrabold tracking-tight text-white">LocalSite <span class="grad-text">OS</span></span>
+          <span class="block font-mono text-[10px] uppercase tracking-[.18em] text-slate-500">Prospecção · Sites · CRM</span>
+        </span>
+      </button>
+      <div class="flex items-center gap-2">
+        <div class="hidden items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-slate-400 md:flex"><span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>Dados: OpenStreetMap</div>
+        <button class="btn btn-ghost btn-sm" data-action="open-settings"><i data-lucide="user-cog" class="h-4 w-4"></i><span class="hidden sm:inline">Meu perfil</span></button>
+      </div>
+    </div>
+    <nav class="mx-auto max-w-7xl px-4 pb-3 sm:px-6">
+      <div class="no-scrollbar flex gap-1.5 overflow-x-auto rounded-2xl border border-white/[0.06] bg-white/[0.02] p-1.5">
+        <button class="tab-btn active" data-tab="prospect"><i data-lucide="map-pinned" class="h-4 w-4"></i>Prospecção Local</button>
+        <button class="tab-btn" data-tab="demo"><i data-lucide="layout-template" class="h-4 w-4"></i>Gerador de Site Demo</button>
+        <button class="tab-btn" data-tab="whatsapp"><i data-lucide="message-circle-more" class="h-4 w-4"></i>Abordagem WhatsApp</button>
+        <button class="tab-btn" data-tab="crm"><i data-lucide="kanban" class="h-4 w-4"></i>Meus Leads (CRM)<span id="crmBadge" class="ml-1 rounded-md bg-violet-500/20 px-1.5 py-0.5 font-mono text-[10px] text-violet-200">0</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+
+    <!-- ================= ABA 1: PROSPECÇÃO ================= -->
+    <section id="tab-prospect" class="tab-panel">
+      <div class="mb-6 flex flex-col gap-3">
+        <span class="inline-flex w-fit items-center gap-2 rounded-full border border-blue-400/20 bg-blue-500/10 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-blue-200"><i data-lucide="sparkles" class="h-3.5 w-3.5"></i>Dados reais e gratuitos</span>
+        <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Encontre negócios locais <span class="grad-text">sem site</span></h1>
+        <p class="max-w-2xl text-slate-400">Escolha um nicho e uma cidade. O LocalSite OS consulta o OpenStreetMap e lista estabelecimentos reais que ainda não têm site cadastrado.</p>
+      </div>
+
+      <form id="searchForm" class="glass rounded-2xl p-4 sm:p-5">
+        <div class="grid gap-3 md:grid-cols-12">
+          <div class="md:col-span-4"><label class="label" for="fNiche">Nicho</label><select id="fNiche" class="field"></select></div>
+          <div class="md:col-span-3"><label class="label" for="fState">Estado</label><select id="fState" class="field"></select></div>
+          <div class="md:col-span-3"><label class="label" for="fCity">Cidade</label><input id="fCity" class="field" placeholder="Ex: Campinas" autocomplete="off" /></div>
+          <div class="flex items-end md:col-span-2"><button type="submit" id="searchBtn" class="btn btn-primary h-[42px] w-full"><i data-lucide="search" class="h-4 w-4"></i><span>Buscar Sem Site</span></button></div>
+        </div>
+        <div id="nicheChips" class="mt-4 flex flex-wrap gap-2"></div>
+      </form>
+
+      <div id="searchStatus" class="mt-5 hidden"></div>
+
+      <div id="resultsToolbar" class="mt-5 hidden flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p id="resultsCount" class="text-sm text-slate-400"></p>
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="relative"><i data-lucide="filter" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"></i><input id="rFilter" class="field !w-52 !py-2 !pl-9" placeholder="Filtrar por nome" /></div>
+          <label class="flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs text-slate-300"><input id="rPhone" type="checkbox" class="accent-violet-500" />Só com telefone</label>
+          <select id="rSort" class="field !w-auto !py-2 text-xs"><option value="score">Maior oportunidade</option><option value="name">Nome (A–Z)</option></select>
+          <button type="button" class="btn btn-ghost btn-sm" data-action="save-all"><i data-lucide="bookmark-plus" class="h-4 w-4"></i>Salvar todos</button>
+        </div>
+      </div>
+
+      <div id="results" class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
+    </section>
+
+    <!-- ================= ABA 2: GERADOR DE SITE ================= -->
+    <section id="tab-demo" class="tab-panel hidden">
+      <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight text-white">Gerador de <span class="grad-text">Site Demo</span></h2>
+          <p class="mt-1 text-slate-400">Um site institucional completo com a cara do negócio, pronto para baixar e publicar de graça.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
+            <button class="dev-btn active" data-device="desktop"><i data-lucide="monitor" class="h-4 w-4"></i>Desktop</button>
+            <button class="dev-btn" data-device="mobile"><i data-lucide="smartphone" class="h-4 w-4"></i>Celular</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" data-action="fullscreen"><i data-lucide="maximize-2" class="h-4 w-4"></i>Tela Cheia</button>
+          <button class="btn btn-ghost btn-sm" data-action="open-tab"><i data-lucide="external-link" class="h-4 w-4"></i>Nova aba</button>
+          <button class="btn btn-ghost btn-sm" data-action="copy-code"><i data-lucide="code-xml" class="h-4 w-4"></i>Copiar código</button>
+          <button class="btn btn-primary" data-action="download"><i data-lucide="download" class="h-4 w-4"></i>Baixar Código do Site</button>
+        </div>
+      </div>
+
+      <div class="grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)]">
+        <aside class="glass h-fit space-y-4 rounded-2xl p-4 sm:p-5 lg:sticky lg:top-36">
+          <div><label class="label" for="dPick">Empresa</label><select id="dPick" class="field"></select></div>
+          <div id="demoForm" class="space-y-3">
+            <div><label class="label" for="dName">Nome do negócio</label><input id="dName" data-demo="name" class="field" /></div>
+            <div><label class="label" for="dTagline">Slogan</label><input id="dTagline" data-demo="tagline" class="field" /></div>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="label" for="dPhone">WhatsApp</label><input id="dPhone" data-demo="phone" class="field" placeholder="(11) 99999-9999" /></div>
+              <div><label class="label" for="dInstagram">Instagram</label><input id="dInstagram" data-demo="instagram" class="field" placeholder="@perfil" /></div>
+            </div>
+            <div><label class="label" for="dAddress">Endereço</label><input id="dAddress" data-demo="address" class="field" /></div>
+            <div><label class="label" for="dHours">Horário</label><input id="dHours" data-demo="hours" class="field" /></div>
+            <div><label class="label" for="dAbout">Texto "Sobre"</label><textarea id="dAbout" data-demo="about" rows="4" class="field resize-y leading-relaxed"></textarea></div>
+            <div>
+              <span class="label">Cores da marca</span>
+              <div class="flex items-center gap-3">
+                <input type="color" id="dColor" data-demo="color" class="h-10 w-12" title="Cor principal" />
+                <input type="color" id="dColor2" data-demo="color2" class="h-10 w-12" title="Cor secundária" />
+                <div id="presets" class="flex flex-wrap gap-1.5"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-blue-400/15 bg-blue-500/[0.06] p-3 text-xs leading-relaxed text-blue-100/80">
+            <p class="mb-1 flex items-center gap-1.5 font-semibold text-blue-100"><i data-lucide="rocket" class="h-3.5 w-3.5"></i>Publicar grátis em 1 minuto</p>
+            Baixe o arquivo, renomeie para <code class="rounded bg-white/10 px-1 font-mono">index.html</code>, coloque numa pasta e arraste em <a href="https://app.netlify.com/drop" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-white">app.netlify.com/drop</a>. Depois é só enviar o link ao dono.
+          </div>
+        </aside>
+
+        <div class="min-w-0">
+          <div id="stage" class="relative flex min-h-[760px] items-start justify-center rounded-2xl border border-white/[0.06] bg-white/[0.015] p-3 sm:p-6">
+            <div id="demoEmpty" class="m-auto max-w-md p-8 text-center">
+              <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 ring-1 ring-violet-400/30"><i data-lucide="wand-sparkles" class="h-7 w-7 text-violet-300"></i></div>
+              <h3 class="text-lg font-bold text-white">Nenhuma empresa selecionada</h3>
+              <p class="mt-2 text-sm text-slate-400">Busque negócios na aba Prospecção e clique em <b class="text-slate-200">Gerar Site Demo</b>, ou teste agora com um exemplo.</p>
+              <div class="mt-6 flex flex-wrap justify-center gap-2">
+                <button class="btn btn-primary btn-sm" data-action="use-sample-demo"><i data-lucide="sparkles" class="h-4 w-4"></i>Usar exemplo</button>
+                <button class="btn btn-ghost btn-sm" data-action="goto" data-goto="prospect"><i data-lucide="search" class="h-4 w-4"></i>Ir para Prospecção</button>
+              </div>
+            </div>
+            <div id="deviceShell" class="desktop hidden">
+              <div class="chrome items-center gap-3 border-b border-black/5 bg-[#ecedf1] px-4 py-2.5">
+                <div class="flex gap-1.5"><span class="h-3 w-3 rounded-full bg-[#ff5f57]"></span><span class="h-3 w-3 rounded-full bg-[#febc2e]"></span><span class="h-3 w-3 rounded-full bg-[#28c840]"></span></div>
+                <div class="mx-auto flex w-full max-w-md items-center justify-center gap-2 rounded-lg bg-white px-3 py-1 font-mono text-[11px] text-slate-500"><i data-lucide="lock" class="h-3 w-3 text-emerald-600"></i><span id="urlBar">seunegocio.netlify.app</span></div>
+                <div class="w-12"></div>
+              </div>
+              <div class="notch"></div>
+              <iframe id="preview" title="Prévia do site demonstrativo"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABA 3: WHATSAPP ================= -->
+    <section id="tab-whatsapp" class="tab-panel hidden">
+      <div class="mb-6">
+        <h2 class="text-3xl font-extrabold tracking-tight text-white">Abordagem <span class="grad-text">WhatsApp</span></h2>
+        <p class="mt-1 text-slate-400">Sequência de mensagens profissionais. Ajuste os dados, edite o texto se quiser e envie com um clique.</p>
+      </div>
+      <div class="grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)]">
+        <aside class="glass h-fit space-y-3 rounded-2xl p-4 sm:p-5 lg:sticky lg:top-36">
+          <div><label class="label" for="wPick">Lead</label><select id="wPick" class="field"></select></div>
+          <div><label class="label" for="wName">Nome do negócio</label><input id="wName" data-wa="name" class="field" placeholder="Ex: Burguer do Zé" /></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="label" for="wContact">Responsável</label><input id="wContact" data-wa="contact" class="field" placeholder="Opcional" /></div>
+            <div><label class="label" for="wPhone">WhatsApp</label><input id="wPhone" data-wa="phone" class="field" placeholder="(11) 99999-9999" /></div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="label" for="wNiche">Nicho</label><select id="wNiche" data-wa="nicheKey" class="field"></select></div>
+            <div><label class="label" for="wCity">Cidade</label><input id="wCity" data-wa="city" class="field" placeholder="Sua cidade" /></div>
+          </div>
+          <div><label class="label" for="wLink">Link do site demo</label><input id="wLink" data-wa="link" class="field" placeholder="https://negocio.netlify.app" /></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="label" for="wPrice">Valor (R$)</label><input id="wPrice" data-wa="price" type="number" min="0" step="1" class="field" /></div>
+            <div><label class="label" for="wMe">Seu nome</label><input id="wMe" data-wa="me" class="field" placeholder="Seu nome" /></div>
+          </div>
+          <label class="flex cursor-pointer items-start gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs text-slate-300"><input id="wMove" type="checkbox" checked class="mt-0.5 accent-violet-500" /><span>Atualizar o status do lead no CRM automaticamente ao abrir o WhatsApp</span></label>
+        </aside>
+        <div id="templates" class="grid content-start gap-4 xl:grid-cols-2"></div>
+      </div>
+    </section>
+
+    <!-- ================= ABA 4: CRM ================= -->
+    <section id="tab-crm" class="tab-panel hidden">
+      <div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight text-white">Meus <span class="grad-text">Leads</span></h2>
+          <p class="mt-1 text-slate-400">Arraste os cards entre as colunas ou mude o status. Tudo fica salvo neste navegador.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button class="btn btn-ghost btn-sm" data-action="lead-new"><i data-lucide="plus" class="h-4 w-4"></i>Novo lead</button>
+          <button class="btn btn-primary btn-sm" data-action="export-csv"><i data-lucide="file-spreadsheet" class="h-4 w-4"></i>Exportar CSV</button>
+        </div>
+      </div>
+      <div id="crmStats" class="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6"></div>
+      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="relative w-full sm:w-72"><i data-lucide="search" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"></i><input id="crmSearch" class="field !py-2 !pl-9" placeholder="Buscar lead, cidade ou telefone" /></div>
+        <div class="flex items-center gap-2">
+          <div class="flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
+            <button class="dev-btn active" data-crmview="kanban"><i data-lucide="columns-3" class="h-4 w-4"></i>Kanban</button>
+            <button class="dev-btn" data-crmview="list"><i data-lucide="list" class="h-4 w-4"></i>Lista</button>
+          </div>
+          <button class="btn btn-danger btn-sm" data-action="clear-leads"><i data-lucide="trash-2" class="h-4 w-4"></i><span class="hidden sm:inline">Limpar</span></button>
+        </div>
+      </div>
+      <div id="crmBoard" class="mt-5"></div>
+    </section>
+  </main>
+
+  <footer class="mx-auto max-w-7xl px-4 pb-10 pt-4 text-xs text-slate-500 sm:px-6">
+    <div class="flex flex-col gap-2 border-t border-white/[0.06] pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <p>LocalSite OS · feito para devs e freelancers que constroem a web local.</p>
+      <p>Dados de mapa © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-slate-300">colaboradores do OpenStreetMap</a> (ODbL).</p>
+    </div>
+  </footer>
+
+  <!-- Tela cheia -->
+  <div id="fsOverlay" class="fixed inset-0 z-[100] hidden flex-col bg-ink-950">
+    <div class="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-2.5">
+      <div class="flex min-w-0 items-center gap-2"><span class="h-2.5 w-2.5 flex-none rounded-full bg-emerald-400"></span><p id="fsTitle" class="truncate text-sm font-semibold text-white"></p><span class="hidden font-mono text-[11px] text-slate-500 sm:inline">· tela cheia</span></div>
+      <div class="flex items-center gap-2">
+        <div class="hidden rounded-xl border border-white/10 bg-white/[0.03] p-1 sm:flex">
+          <button class="dev-btn active" data-fsdev="desktop"><i data-lucide="monitor" class="h-4 w-4"></i>Desktop</button>
+          <button class="dev-btn" data-fsdev="mobile"><i data-lucide="smartphone" class="h-4 w-4"></i>Celular</button>
+        </div>
+        <button class="btn btn-primary btn-sm" data-action="download"><i data-lucide="download" class="h-4 w-4"></i><span class="hidden sm:inline">Baixar</span></button>
+        <button class="btn btn-ghost btn-sm" data-action="close-fs"><i data-lucide="x" class="h-4 w-4"></i>Fechar</button>
+      </div>
+    </div>
+    <div class="flex flex-1 justify-center overflow-hidden bg-ink-900"><iframe id="fsFrame" title="Site em tela cheia" class="h-full w-full border-0 bg-white"></iframe></div>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toasts" class="pointer-events-none fixed bottom-5 right-5 z-[120] flex flex-col items-end gap-2"></div>
+
+<script>
+/* =====================================================================
+   LocalSite OS — dados de configuração
+   ===================================================================== */
+const UFS = [
+  ['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],['BA','Bahia'],['CE','Ceará'],
+  ['DF','Distrito Federal'],['ES','Espírito Santo'],['GO','Goiás'],['MA','Maranhão'],['MT','Mato Grosso'],
+  ['MS','Mato Grosso do Sul'],['MG','Minas Gerais'],['PA','Pará'],['PB','Paraíba'],['PR','Paraná'],
+  ['PE','Pernambuco'],['PI','Piauí'],['RJ','Rio de Janeiro'],['RN','Rio Grande do Norte'],
+  ['RS','Rio Grande do Sul'],['RO','Rondônia'],['RR','Roraima'],['SC','Santa Catarina'],
+  ['SP','São Paulo'],['SE','Sergipe'],['TO','Tocantins'],
+];
+const UF_NAME = Object.fromEntries(UFS);
+const DDD = { AC:68, AL:82, AP:96, AM:92, BA:71, CE:85, DF:61, ES:27, GO:62, MA:98, MT:65, MS:67, MG:31, PA:91, PB:83, PR:41, PE:81, PI:86, RJ:21, RN:84, RS:51, RO:69, RR:95, SC:48, SP:11, SE:79, TO:63 };
+
+const OVERPASS_ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
+];
+
+/* Cada nicho: filtros do OpenStreetMap + conteúdo do site demo */
+const NICHES = {
+  hamburgueria: {
+    label: 'Hamburgueria', emoji: '🍔', c1: '#f97316', c2: '#dc2626', plural: 'hamburguerias', art: 'uma hamburgueria',
+    osm: ['["amenity"="fast_food"]["cuisine"~"burger",i]', '["amenity"="restaurant"]["cuisine"~"burger",i]', '["amenity"~"fast_food|restaurant"]["name"~"burg",i]'],
+    tagline: 'Hambúrgueres artesanais, suculentos e feitos na hora',
+    about: 'Na {nome}, cada hambúrguer é preparado com blend de carnes selecionadas, pão macio e ingredientes frescos. Um lugar para reunir os amigos, matar a fome com qualidade e viver a melhor experiência burger de {cidade}.',
+    highlights: ['Blend de carnes selecionadas', 'Ingredientes frescos todos os dias', 'Delivery rápido e embalagem caprichada'],
+    services: [['🍔','Burgers Artesanais','Blends grelhados na chapa com queijos especiais e molhos da casa.'],['🍟','Porções & Fritas','Batatas rústicas, onion rings e porções para dividir.'],['🥤','Bebidas & Shakes','Milkshakes cremosos, refrigerantes e sucos naturais.'],['🛵','Delivery','Peça pelo WhatsApp e receba quentinho em casa.'],['🥗','Opções Veggie','Hambúrgueres vegetarianos tão saborosos quanto os clássicos.'],['🎉','Combos','Combos individuais e para a família com preço especial.']],
+    gallery: [['🍔','Smash Burger'],['🧀','Cheddar & Bacon'],['🍟','Batata Rústica'],['🥤','Milkshake'],['🔥','Na Brasa'],['👨‍👩‍👧','Combo Família']],
+    hours: 'Ter a Dom · 18h às 23h30', cta: 'Pedir pelo WhatsApp',
+    samples: ['Burguer do Zé','Smash House','Brasa Burger','Rei do Lanche Burger','Black Bull Burger','Chapa Quente Burgers','Garagem Burger','Mister Burger'],
+  },
+  pizzaria: {
+    label: 'Pizzaria', emoji: '🍕', c1: '#dc2626', c2: '#15803d', plural: 'pizzarias', art: 'uma pizzaria',
+    osm: ['["amenity"~"restaurant|fast_food"]["cuisine"~"pizza",i]', '["amenity"~"restaurant|fast_food"]["name"~"pizz",i]'],
+    tagline: 'Pizza artesanal de forno, massa leve e muito recheio',
+    about: 'A {nome} nasceu da paixão pela verdadeira pizza: massa de longa fermentação, molho de tomate artesanal e ingredientes de primeira. Perfeita para a família, para os amigos e para aquela noite especial em {cidade}.',
+    highlights: ['Massa de longa fermentação', 'Forno em alta temperatura', 'Entrega rápida na região'],
+    services: [['🍕','Pizzas Tradicionais','Os sabores clássicos que todo mundo ama, bem recheados.'],['⭐','Pizzas Especiais','Combinações exclusivas da casa com ingredientes nobres.'],['🍫','Pizzas Doces','Chocolate, banana com canela, Romeu e Julieta e mais.'],['🛵','Delivery','Pizza quentinha na sua porta, pedindo pelo WhatsApp.'],['🥤','Bebidas','Refrigerantes, sucos e cervejas geladas.'],['🎂','Eventos','Rodízio e pizzas para festas e aniversários.']],
+    gallery: [['🍕','Margherita'],['🧀','Quatro Queijos'],['🔥','Forno'],['🍅','Ingredientes'],['🍫','Pizza Doce'],['🍷','Noite em Família']],
+    hours: 'Todos os dias · 18h às 0h', cta: 'Pedir pelo WhatsApp',
+    samples: ['Pizzaria Bella Napoli','Forno de Pedra Pizzas','Pizzaria do Bairro','Don Giovanni Pizzas','Pizza na Lenha','Pizzaria Sabor Italiano','Mamma Mia Pizzaria','Pizzaria Estação'],
+  },
+  barbearia: {
+    label: 'Barbearia', emoji: '💈', c1: '#b45309', c2: '#1f2937', plural: 'barbearias', art: 'uma barbearia',
+    osm: ['["shop"="hairdresser"]["hairdresser"~"barber",i]', '["shop"="barber"]', '["shop"="hairdresser"]["name"~"barb",i]'],
+    tagline: 'Corte, barba e estilo com quem entende do assunto',
+    about: 'A {nome} é o ponto de encontro de quem valoriza um visual alinhado. Profissionais experientes, ambiente descontraído e atendimento pontual para você sair renovado — aqui em {cidade}.',
+    highlights: ['Barbeiros experientes', 'Horário marcado, sem espera', 'Ambiente climatizado e descontraído'],
+    services: [['✂️','Corte Masculino','Do clássico ao degradê, do jeito que você gosta.'],['🧔','Barba Completa','Toalha quente, navalha e acabamento impecável.'],['💈','Corte + Barba','O combo completo com preço especial.'],['🎨','Pigmentação','Disfarce falhas e realce o visual da barba.'],['👦','Corte Infantil','Atendimento paciente para os pequenos.'],['💆','Sobrancelha & Limpeza','Cuidados extras para um acabamento perfeito.']],
+    gallery: [['💈','Ambiente'],['✂️','Degradê'],['🧔','Barba'],['🪒','Navalha'],['🪑','Cadeira Clássica'],['😎','Estilo']],
+    hours: 'Seg a Sáb · 9h às 20h', cta: 'Agendar pelo WhatsApp',
+    samples: ['Barbearia Navalha de Ouro','Dom Barber Shop','Barbearia do Léo','Old School Barbearia','Barbearia Vintage','Corte Fino Barbearia','Barbearia Imperial','Seu Bigode Barbearia'],
+  },
+  salao: {
+    label: 'Salão de Beleza', emoji: '💅', c1: '#ec4899', c2: '#a855f7', plural: 'salões de beleza', art: 'um salão de beleza',
+    osm: ['["shop"="beauty"]', '["shop"="hairdresser"]["name"~"sal[aã]o|beleza|studio|espa[cç]o|hair",i]', '["shop"="cosmetics"]["name"~"beleza|studio",i]'],
+    tagline: 'Beleza, cuidado e autoestima em cada detalhe',
+    about: 'O {nome} é um espaço pensado para você se sentir bem. Cabelo, unhas e estética com profissionais atualizados, produtos de qualidade e aquele atendimento acolhedor que faz toda a diferença em {cidade}.',
+    highlights: ['Profissionais especializadas', 'Produtos de alta qualidade', 'Ambiente acolhedor e higienizado'],
+    services: [['💇‍♀️','Cabelo','Corte, escova, coloração, mechas e tratamentos.'],['💅','Manicure & Pedicure','Unhas impecáveis, esmaltação em gel e alongamento.'],['✨','Estética Facial','Limpeza de pele, design de sobrancelhas e mais.'],['💄','Maquiagem','Make para festas, eventos e noivas.'],['🌿','Tratamentos','Hidratação, reconstrução e cronograma capilar.'],['👰','Dia da Noiva','Pacote completo para o seu grande dia.']],
+    gallery: [['💇‍♀️','Cabelos'],['💅','Unhas'],['💄','Make'],['🌸','Ambiente'],['✨','Estética'],['👰','Noivas']],
+    hours: 'Ter a Sáb · 9h às 19h', cta: 'Agendar pelo WhatsApp',
+    samples: ['Studio Bella Mulher','Espaço Glamour','Salão Charme & Estilo','Studio Ana Beauty','Espaço Divas','Salão Raízes','Bela Vida Estética','Studio Rosa Chá'],
+  },
+  padaria: {
+    label: 'Padaria', emoji: '🥖', c1: '#d97706', c2: '#78350f', plural: 'padarias', art: 'uma padaria',
+    osm: ['["shop"="bakery"]', '["shop"="pastry"]'],
+    tagline: 'Pão quentinho toda hora e o melhor café da manhã do bairro',
+    about: 'Desde cedo, a {nome} enche o bairro com o cheirinho de pão fresco. Produção própria, receitas de família e um balcão cheio de delícias para o seu café da manhã, lanche da tarde ou encomenda especial em {cidade}.',
+    highlights: ['Fornadas várias vezes ao dia', 'Produção própria e artesanal', 'Encomendas para festas e eventos'],
+    services: [['🥖','Pães Frescos','Francês, integral, australiano e pães especiais.'],['🥐','Confeitaria','Bolos, tortas, sonhos e doces caseiros.'],['☕','Café da Manhã','Cafés, pão na chapa, misto e sucos naturais.'],['🧀','Frios & Laticínios','Queijos, presuntos e frios fatiados na hora.'],['🎂','Encomendas','Bolos e salgados para festas e eventos.'],['🛵','Entrega','Peça pelo WhatsApp e receba em casa.']],
+    gallery: [['🥖','Pão Francês'],['🥐','Croissant'],['🎂','Bolos'],['☕','Café'],['🥪','Lanches'],['🍩','Doces']],
+    hours: 'Todos os dias · 6h às 21h', cta: 'Encomendar pelo WhatsApp',
+    samples: ['Padaria Pão Dourado','Panificadora Trigo Bom','Padaria Doce Lar','Padaria Nova Aurora','Panificadora Central','Padaria Bom Dia','Casa do Pão','Padaria Estrela'],
+  },
+  restaurante: {
+    label: 'Restaurante', emoji: '🍽️', c1: '#16a34a', c2: '#065f46', plural: 'restaurantes', art: 'um restaurante',
+    osm: ['["amenity"="restaurant"]'],
+    tagline: 'Comida caseira, tempero de verdade e ambiente acolhedor',
+    about: 'O {nome} serve comida feita com carinho, ingredientes frescos e aquele tempero que lembra a casa da família. Almoço executivo, pratos à la carte e marmitas para quem trabalha e vive em {cidade}.',
+    highlights: ['Ingredientes frescos diariamente', 'Pratos fartos e bem servidos', 'Ambiente familiar e confortável'],
+    services: [['🍛','Almoço Executivo','Prato completo com preço justo de segunda a sexta.'],['⚖️','Self-service','Variedade de saladas, carnes e acompanhamentos.'],['🍱','Marmitas','Marmitas e quentinhas com entrega na região.'],['🥩','À la Carte','Pratos especiais preparados na hora.'],['🍰','Sobremesas','Doces caseiros para fechar com chave de ouro.'],['🎉','Eventos','Espaço e cardápio para confraternizações.']],
+    gallery: [['🍛','Prato do Dia'],['🥗','Saladas'],['🥩','Grelhados'],['🍽️','Salão'],['🍰','Sobremesas'],['👨‍🍳','Cozinha']],
+    hours: 'Seg a Sáb · 11h às 15h', cta: 'Pedir pelo WhatsApp',
+    samples: ['Restaurante Sabor da Terra','Cantinho Mineiro','Restaurante Tempero Caseiro','Recanto do Sabor','Restaurante Bom Prato','Panela de Barro','Restaurante Fogão a Lenha','Sabor & Arte'],
+  },
+  lanchonete: {
+    label: 'Lanchonete', emoji: '🌭', c1: '#f59e0b', c2: '#ea580c', plural: 'lanchonetes', art: 'uma lanchonete',
+    osm: ['["amenity"="fast_food"]'],
+    tagline: 'Lanches, salgados e sucos com sabor de quero mais',
+    about: 'A {nome} é parada obrigatória para quem quer comer bem e rápido. Lanches caprichados, salgados fresquinhos e sucos naturais com preço justo, no coração de {cidade}.',
+    highlights: ['Atendimento rápido', 'Preço justo todos os dias', 'Salgados fresquinhos a toda hora'],
+    services: [['🥪','Lanches','X-tudo, x-salada, misto e os clássicos da casa.'],['🥟','Salgados','Coxinha, pastel, esfiha e salgados assados.'],['🧃','Sucos Naturais','Sucos da fruta, vitaminas e açaí.'],['🌭','Cachorro-quente','Prensado ou tradicional, bem recheado.'],['☕','Café & Lanche','Café expresso e pão de queijo quentinho.'],['🛵','Delivery','Faça seu pedido pelo WhatsApp.']],
+    gallery: [['🥪','X-Tudo'],['🥟','Salgados'],['🌭','Hot Dog'],['🧃','Sucos'],['☕','Café'],['🍟','Porções']],
+    hours: 'Seg a Sáb · 8h às 22h', cta: 'Pedir pelo WhatsApp',
+    samples: ['Lanchonete do Bairro','Point do Lanche','Lanchonete Sabor & Cia','Cantina da Praça','Lanchonete Ki-Delícia','Esquina do Lanche','Lanchonete Central','Point do Pastel'],
+  },
+  cafeteria: {
+    label: 'Cafeteria', emoji: '☕', c1: '#a16207', c2: '#3f2412', plural: 'cafeterias', art: 'uma cafeteria',
+    osm: ['["amenity"="cafe"]'],
+    tagline: 'Cafés especiais, doces artesanais e um cantinho para ficar',
+    about: 'A {nome} é um convite para desacelerar. Grãos especiais, métodos de preparo cuidadosos e uma vitrine de doces artesanais em um ambiente aconchegante, perfeito para trabalhar ou encontrar amigos em {cidade}.',
+    highlights: ['Grãos especiais selecionados', 'Doces e salgados artesanais', 'Wi-Fi e ambiente aconchegante'],
+    services: [['☕','Cafés Especiais','Espresso, coado, cappuccino e métodos filtrados.'],['🥐','Padaria Artesanal','Croissants, pães de fermentação natural e quiches.'],['🍰','Doces','Bolos, tortas e cookies feitos aqui.'],['🧊','Bebidas Geladas','Cold brew, frappés e chás gelados.'],['💻','Espaço Work','Wi-Fi, tomadas e um cantinho tranquilo.'],['🎁','Kits & Presentes','Cafés em grãos e kits para presentear.']],
+    gallery: [['☕','Espresso'],['🥐','Croissant'],['🍰','Bolos'],['🌿','Ambiente'],['🧊','Cold Brew'],['📚','Cantinho']],
+    hours: 'Seg a Sáb · 8h às 19h', cta: 'Fale pelo WhatsApp',
+    samples: ['Café Grão Nobre','Cafeteria Aroma','Café do Largo','Empório do Café','Café Bendito','Coffee Corner','Café Prosa Boa','Cafeteria Pé de Café'],
+  },
+  petshop: {
+    label: 'Pet Shop', emoji: '🐾', c1: '#06b6d4', c2: '#2563eb', plural: 'pet shops', art: 'um pet shop',
+    osm: ['["shop"="pet"]', '["shop"="pet_grooming"]', '["amenity"="animal_grooming"]'],
+    tagline: 'Amor, cuidado e tudo o que seu pet precisa',
+    about: 'No {nome}, seu pet é tratado como da família. Banho e tosa com carinho, produtos de qualidade e uma equipe apaixonada por animais, pronta para cuidar do seu melhor amigo em {cidade}.',
+    highlights: ['Equipe apaixonada por animais', 'Produtos seguros e de qualidade', 'Leva e traz na região'],
+    services: [['🛁','Banho & Tosa','Banho, tosa higiênica e tosa na tesoura.'],['🦴','Rações & Petiscos','As melhores marcas para cães e gatos.'],['🧸','Acessórios','Caminhas, coleiras, brinquedos e roupinhas.'],['🚐','Leva e Traz','Buscamos e entregamos seu pet em casa.'],['💉','Cuidados','Antipulgas, vermífugos e higiene.'],['🐱','Gatos','Atendimento especial para felinos.']],
+    gallery: [['🐶','Banho'],['🐱','Gatinhos'],['✂️','Tosa'],['🦴','Petiscos'],['🧸','Brinquedos'],['❤️','Clientes Felizes']],
+    hours: 'Seg a Sáb · 8h às 18h', cta: 'Agendar pelo WhatsApp',
+    samples: ['Pet Shop Amigo Fiel','Mundo Pet','Patas & Cia','Pet Feliz','Cão & Gato Pet Shop','Pet Center Bicho Mimado','Toca do Pet','Pet Love'],
+  },
+  oficina: {
+    label: 'Oficina Mecânica', emoji: '🔧', c1: '#ef4444', c2: '#1e293b', plural: 'oficinas mecânicas', art: 'uma oficina',
+    osm: ['["shop"="car_repair"]', '["shop"="tyres"]'],
+    tagline: 'Mecânica de confiança, orçamento honesto e serviço garantido',
+    about: 'A {nome} cuida do seu carro com transparência e responsabilidade. Diagnóstico preciso, peças de qualidade e mecânicos experientes para você rodar tranquilo pelas ruas de {cidade}.',
+    highlights: ['Orçamento sem compromisso', 'Peças com garantia', 'Mecânicos experientes'],
+    services: [['🔧','Mecânica Geral','Motor, câmbio, embreagem e manutenção completa.'],['🛞','Suspensão & Freios','Amortecedores, pastilhas, discos e alinhamento.'],['🛢️','Troca de Óleo','Óleo e filtros com produtos de qualidade.'],['⚡','Elétrica','Bateria, alternador, injeção eletrônica e scanner.'],['❄️','Ar-condicionado','Higienização, recarga de gás e reparos.'],['📋','Revisão','Revisão preventiva antes de viajar.']],
+    gallery: [['🔧','Oficina'],['🚗','Revisão'],['🛞','Pneus'],['🛢️','Troca de Óleo'],['⚙️','Motor'],['✅','Carro Pronto']],
+    hours: 'Seg a Sex · 8h às 18h · Sáb até 12h', cta: 'Orçamento pelo WhatsApp',
+    samples: ['Auto Center Silva','Oficina do Toninho','Mecânica Confiança','Auto Mecânica Irmãos','Oficina Motor Forte','Centro Automotivo Rota','Mecânica São Jorge','Oficina Garage Car'],
+  },
+  academia: {
+    label: 'Academia', emoji: '🏋️', c1: '#22c55e', c2: '#0f172a', plural: 'academias', art: 'uma academia',
+    osm: ['["leisure"="fitness_centre"]', '["leisure"="sports_centre"]["sport"~"fitness|crossfit",i]'],
+    tagline: 'Treine com estrutura, orientação e muita motivação',
+    about: 'A {nome} é o lugar certo para você alcançar seus objetivos. Equipamentos modernos, professores qualificados e um ambiente motivador para treinar com segurança e resultado em {cidade}.',
+    highlights: ['Professores qualificados', 'Equipamentos modernos', 'Planos que cabem no bolso'],
+    services: [['🏋️','Musculação','Área completa de pesos livres e máquinas.'],['🏃','Aeróbico','Esteiras, bikes e elípticos.'],['🤸','Funcional','Treinos dinâmicos em grupo.'],['🥊','Lutas','Muay thai, boxe e jiu-jitsu.'],['📋','Avaliação Física','Acompanhamento e treino personalizado.'],['🧘','Pilates & Yoga','Flexibilidade, postura e bem-estar.']],
+    gallery: [['🏋️','Musculação'],['🏃','Cardio'],['🤸','Funcional'],['🥊','Lutas'],['💪','Resultados'],['🧘','Bem-estar']],
+    hours: 'Seg a Sex · 6h às 22h · Sáb 8h às 14h', cta: 'Aula grátis pelo WhatsApp',
+    samples: ['Academia Corpo em Forma','Iron Fit Academia','Academia Movimento','Power Gym','Academia Energia','Studio Fit Life','Academia Top Fitness','Arena Fit'],
+  },
+  lavajato: {
+    label: 'Lava-Jato', emoji: '🚗', c1: '#0ea5e9', c2: '#1d4ed8', plural: 'lava-jatos', art: 'um lava-jato',
+    osm: ['["amenity"="car_wash"]'],
+    tagline: 'Seu carro limpo, brilhando e cheiroso como novo',
+    about: 'O {nome} cuida da aparência do seu veículo com produtos de qualidade e muita atenção aos detalhes. Lavagem rápida, higienização completa e estética automotiva em {cidade}.',
+    highlights: ['Produtos que não agridem a pintura', 'Agilidade no atendimento', 'Atenção a cada detalhe'],
+    services: [['🚿','Lavagem Simples','Externa caprichada com secagem.'],['✨','Lavagem Completa','Interna e externa, aspiração e pretinho.'],['🧽','Higienização','Bancos, carpetes e teto higienizados.'],['💎','Polimento','Remoção de riscos e brilho intenso.'],['🛡️','Cristalização','Proteção duradoura para a pintura.'],['🏍️','Motos','Lavagem especial para motocicletas.']],
+    gallery: [['🚗','Antes & Depois'],['🫧','Espuma'],['✨','Polimento'],['🧽','Interno'],['💎','Brilho'],['🏍️','Motos']],
+    hours: 'Seg a Sáb · 8h às 18h', cta: 'Agendar pelo WhatsApp',
+    samples: ['Lava-Jato Brilho Total','Lava Car Express','Lava-Jato Gota d\'Água','Auto Spa Lavagem','Lava-Jato Cristal','Lava Rápido Estrela','Car Wash Premium','Lava-Jato do Bairro'],
+  },
+  floricultura: {
+    label: 'Floricultura', emoji: '🌷', c1: '#e11d48', c2: '#15803d', plural: 'floriculturas', art: 'uma floricultura',
+    osm: ['["shop"="florist"]', '["shop"="garden_centre"]'],
+    tagline: 'Flores frescas e arranjos que dizem tudo por você',
+    about: 'A {nome} transforma sentimentos em flores. Buquês, arranjos e plantas selecionadas com carinho para aniversários, datas especiais e momentos únicos, com entrega em {cidade}.',
+    highlights: ['Flores frescas todos os dias', 'Entrega no mesmo dia', 'Arranjos personalizados'],
+    services: [['💐','Buquês','Buquês de rosas, girassóis e flores do campo.'],['🌹','Arranjos','Arranjos para presentes e decoração.'],['🪴','Plantas','Vasos, suculentas e plantas para casa.'],['💍','Casamentos','Decoração floral para cerimônias.'],['🎁','Cestas','Cestas de café da manhã e presentes.'],['🛵','Entrega','Entregamos na região com cartão.']],
+    gallery: [['💐','Buquês'],['🌹','Rosas'],['🌻','Girassóis'],['🪴','Plantas'],['💍','Casamentos'],['🎁','Presentes']],
+    hours: 'Seg a Sáb · 8h às 19h · Dom até 12h', cta: 'Encomendar pelo WhatsApp',
+    samples: ['Floricultura Jardim Secreto','Flores & Cia','Floricultura Primavera','Ateliê das Flores','Floricultura Bem-Me-Quer','Recanto das Rosas','Floricultura Girassol','Flor de Lis'],
+  },
+  sorveteria: {
+    label: 'Sorveteria / Açaí', emoji: '🍦', c1: '#ec4899', c2: '#7c3aed', plural: 'sorveterias', art: 'uma sorveteria',
+    osm: ['["amenity"="ice_cream"]', '["shop"="ice_cream"]', '["amenity"~"fast_food|cafe"]["name"~"a[cç]a[ií]",i]'],
+    tagline: 'Sorvetes cremosos e açaí do jeitinho que você gosta',
+    about: 'A {nome} é sinônimo de refresco e alegria. Sorvetes artesanais, açaí cremoso com dezenas de complementos e milkshakes irresistíveis para refrescar os dias quentes de {cidade}.',
+    highlights: ['Sabores artesanais', 'Mais de 30 complementos', 'Ambiente família'],
+    services: [['🍨','Sorvetes','Sabores artesanais por quilo ou na casquinha.'],['🍇','Açaí','Açaí cremoso no copo ou na tigela.'],['🥤','Milkshakes','Shakes cremosos com cobertura.'],['🍌','Complementos','Frutas, granola, leite em pó, Nutella e mais.'],['🧁','Sobremesas','Petit gâteau, sundae e taças especiais.'],['🛵','Delivery','Peça pelo WhatsApp sem sair de casa.']],
+    gallery: [['🍨','Sorvetes'],['🍇','Açaí'],['🥤','Shakes'],['🍓','Frutas'],['🍫','Coberturas'],['🌈','Sabores']],
+    hours: 'Todos os dias · 12h às 22h', cta: 'Pedir pelo WhatsApp',
+    samples: ['Açaí do Ponto','Sorveteria Gelato Mio','Açaiteria Roxinho','Sorveteria Polo Norte','Açaí Mania','Gelateria Doce Frio','Sorveteria Iglu','Açaí Tropical'],
+  },
+  confeitaria: {
+    label: 'Doceria / Confeitaria', emoji: '🧁', c1: '#f43f5e', c2: '#c026d3', plural: 'docerias', art: 'uma doceria',
+    osm: ['["shop"="confectionery"]', '["shop"="chocolate"]', '["shop"="pastry"]'],
+    tagline: 'Doces artesanais que transformam momentos em lembranças',
+    about: 'A {nome} cria doces artesanais com receitas exclusivas e muito capricho. Bolos decorados, docinhos finos e sobremesas para adoçar o seu dia e as suas festas em {cidade}.',
+    highlights: ['Receitas exclusivas', 'Ingredientes nobres', 'Encomendas personalizadas'],
+    services: [['🎂','Bolos Decorados','Bolos personalizados para aniversários e eventos.'],['🍬','Docinhos Finos','Brigadeiros gourmet, bem-casados e trufas.'],['🧁','Cupcakes','Cupcakes decorados e caixas para presente.'],['🥧','Tortas','Tortas doces inteiras ou em fatias.'],['💒','Casamentos','Mesa de doces completa para o grande dia.'],['🎁','Kits Presente','Caixas de doces para datas especiais.']],
+    gallery: [['🎂','Bolos'],['🧁','Cupcakes'],['🍫','Brigadeiros'],['🥧','Tortas'],['💒','Casamentos'],['🎁','Presentes']],
+    hours: 'Ter a Sáb · 9h às 19h', cta: 'Encomendar pelo WhatsApp',
+    samples: ['Doce Encanto Confeitaria','Ateliê do Doce','Doceria Açúcar & Afeto','Brigaderia da Vó','Confeitaria Cereja','Doces da Lu','Sweet Home Doceria','Doceria Mel & Canela'],
+  },
+};
+
+const PRESETS = [
+  ['#f97316','#dc2626'],['#dc2626','#15803d'],['#b45309','#1f2937'],['#ec4899','#a855f7'],
+  ['#0ea5e9','#1d4ed8'],['#22c55e','#0f172a'],['#a16207','#3f2412'],['#3b82f6','#8b5cf6'],
+];
+
+const STATUSES = [
+  { k: 'novo', label: 'Novo', icon: 'sparkles', color: '#60a5fa' },
+  { k: 'contatado', label: 'Contatado', icon: 'message-circle', color: '#a78bfa' },
+  { k: 'proposta', label: 'Proposta Enviada', icon: 'file-text', color: '#fbbf24' },
+  { k: 'fechado', label: 'Fechado', icon: 'badge-check', color: '#34d399' },
+];
+
+/* Modelos de mensagens */
+const TEMPLATES = [
+  {
+    key: 'ice', step: 1, title: 'Quebra-gelo', icon: 'hand', moveTo: 'contatado',
+    desc: 'Primeiro contato: leve, curto e sem pressão.',
+    build: (v) => `Olá${v.contact ? ', ' + v.contact : ''}! Tudo bem? 😊
+
+Me chamo ${v.me || '[seu nome]'} e trabalho criando sites para negócios aqui de ${v.city || 'nossa cidade'}. Estava pesquisando ${v.plural} da região e encontrei a *${v.name || '[negócio]'}* — reparei que vocês ainda não têm um site próprio aparecendo no Google.
+
+Preparei uma ideia rápida pensando em vocês. Posso te mostrar? Leva 1 minutinho. 🙌`,
+  },
+  {
+    key: 'demo', step: 2, title: 'Apresentação do site demo', icon: 'monitor-smartphone', moveTo: 'contatado',
+    desc: 'Envie a prévia gratuita já pronta com a cara do negócio.',
+    build: (v) => `Oi${v.contact ? ', ' + v.contact : ''}! Como prometido, montei uma *prévia gratuita* do site da ${v.name || '[negócio]'}: 👇
+
+🔗 ${v.link || '[link do site demo]'}
+
+O que já está nele:
+✅ Página com a identidade da ${v.name || '[negócio]'}
+✅ Botão direto para o WhatsApp de vocês
+✅ Endereço com mapa e horário de funcionamento
+✅ Funciona perfeitamente no celular
+
+Dá uma olhada e me diz o que achou? Posso ajustar cores, fotos e textos do jeitinho que você quiser.`,
+  },
+  {
+    key: 'hook', step: 3, title: 'Gancho de vendas', icon: 'flame', moveTo: 'proposta',
+    desc: 'Mostre o valor, crie urgência e apresente a oferta.',
+    build: (v) => `${v.contact ? v.contact + ', u' : 'U'}m dado rápido: hoje a maioria das pessoas pesquisa no Google antes de escolher ${v.art} — e quem não aparece com um site acaba perdendo esses clientes para a concorrência. 📈
+
+Para colocar a *${v.name || '[negócio]'}* no ar, estou com uma condição especial esta semana:
+
+💰 Site completo por *${v.priceFmt}*
+🌐 Publicação e domínio configurados
+📱 Ajustes ilimitados no primeiro mês
+📍 Cadastro no Google Meu Negócio de bônus
+
+Fechando até sexta, já deixo tudo no ar em até 3 dias. Bora colocar a ${v.name || 'sua empresa'} no mapa? 🚀`,
+  },
+  {
+    key: 'follow', step: 4, title: 'Follow-up', icon: 'calendar-clock', moveTo: null,
+    desc: 'Retome a conversa com educação, 2 a 3 dias depois.',
+    build: (v) => `Oi${v.contact ? ', ' + v.contact : ''}, tudo certo? Passando só para saber se você conseguiu ver a prévia do site da *${v.name || '[negócio]'}* que te enviei. 🙂
+
+🔗 ${v.link || '[link do site demo]'}
+
+Se preferir, posso te ligar rapidinho para explicar ou ajustar algo antes. Sem compromisso nenhum — fico à disposição!
+
+${v.me || '[seu nome]'}`,
+  },
+];
+
+/* =====================================================================
+   Utilitários
+   ===================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const icons = () => { try { window.lucide && window.lucide.createIcons(); } catch (e) {} };
+const slug = (s) => String(s || 'site').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48) || 'site';
+const digitsOnly = (s) => String(s || '').replace(/\D/g, '');
+const brl = (v) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(Number(v) || 0);
+const debounce = (fn, ms = 250) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+
+function waDigits(p) {
+  let d = digitsOnly(String(p || '').split(/[;,\/]/)[0]).replace(/^0+/, '');
+  if (!d) return '';
+  if (d.startsWith('55') && d.length >= 12) return d;
+  if (d.length === 10 || d.length === 11) return '55' + d;
+  return d.length >= 8 ? d : '';
+}
+function formatPhone(p) {
+  let d = waDigits(p);
+  if (!d) return p || '';
+  if (d.startsWith('55') && d.length >= 12) d = d.slice(2);
+  if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return p;
+}
+function ptHours(h) {
+  if (!h) return '';
+  const map = { Mo: 'Seg', Tu: 'Ter', We: 'Qua', Th: 'Qui', Fr: 'Sex', Sa: 'Sáb', Su: 'Dom', PH: 'Feriados' };
+  if (/24\/7/.test(h)) return 'Aberto 24 horas';
+  return h.replace(/\b(Mo|Tu|We|Th|Fr|Sa|Su|PH)\b/g, (m) => map[m])
+    .replace(/\boff\b/gi, 'fechado').replace(/;\s*/g, ' · ').replace(/-/g, ' a ')
+    .replace(/(\d{1,2}:\d{2}) a (\d{1,2}:\d{2})/g, '$1–$2');
+}
+function hexToRgb(hex) {
+  let h = String(hex || '#000000').replace('#', '');
+  if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+  const n = parseInt(h, 16) || 0;
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+const rgba = (hex, a) => { const [r, g, b] = hexToRgb(hex); return `rgba(${r},${g},${b},${a})`; };
+function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function stars(r) { const n = Math.round(Number(r) || 0); return '★'.repeat(Math.min(5, n)) + '☆'.repeat(Math.max(0, 5 - n)); }
+function load(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } }
+function persist(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { toast('Não foi possível salvar no navegador', 'err'); } }
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) {
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch (err) {}
+    ta.remove(); return ok;
+  }
+}
+async function fetchJSON(url, opts = {}, timeout = 20000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeout);
+  try {
+    const r = await fetch(url, { ...opts, signal: ctrl.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+function toast(msg, type = 'ok') {
+  const m = { ok: ['check-circle-2', 'text-emerald-300', 'border-emerald-400/25'], warn: ['alert-triangle', 'text-amber-300', 'border-amber-400/25'], err: ['x-circle', 'text-rose-300', 'border-rose-400/25'], info: ['info', 'text-blue-300', 'border-blue-400/25'] }[type] || [];
+  const el = document.createElement('div');
+  el.className = `toast pointer-events-auto flex max-w-sm items-center gap-3 rounded-xl border ${m[2]} bg-ink-900/95 px-4 py-3 text-sm text-slate-100 shadow-2xl shadow-black/50 backdrop-blur-xl`;
+  el.innerHTML = `<i data-lucide="${m[0]}" class="h-4 w-4 flex-none ${m[1]}"></i><span>${esc(msg)}</span>`;
+  $('#toasts').appendChild(el); icons();
+  setTimeout(() => { el.classList.add('toast-out'); setTimeout(() => el.remove(), 320); }, 3200);
+}
+
+/* =====================================================================
+   Estado
+   ===================================================================== */
+const LS_LEADS = 'localsite_os_leads_v1';
+const LS_SET = 'localsite_os_settings_v1';
+const LS_QUERY = 'localsite_os_query_v1';
+
+const state = {
+  results: [], isSample: false, sampleReason: '', searching: false,
+  filter: { text: '', phone: false, sort: 'score' },
+  leads: load(LS_LEADS, []),
+  settings: Object.assign({ devName: '', devPhone: '', price: 497 }, load(LS_SET, {})),
+  extra: {},
+  demo: null, device: 'desktop', fsDevice: 'desktop',
+  crmView: 'kanban', crmSearch: '',
+  wa: { leadId: '', name: '', contact: '', phone: '', nicheKey: 'hamburgueria', city: '', link: '', price: '', me: '' },
+};
+if (!Array.isArray(state.leads)) state.leads = [];
+
+const findBiz = (id) => state.results.find((b) => b.id === id) || state.leads.find((b) => b.id === id) || state.extra[id] || null;
+const isSaved = (id) => state.leads.some((l) => l.id === id);
+const nicheOf = (k) => NICHES[k] || NICHES.hamburgueria;
+const suggestLink = (name) => `https://${slug(name)}.netlify.app`;
+
+function score(b) {
+  let s = 40;
+  if (b.phone) s += 25;
+  if (b.address) s += 10;
+  if (b.hours) s += 10;
+  if (b.instagram) s += 10;
+  if (b.rating) s += 5;
+  return Math.min(100, s);
+}
+
+/* =====================================================================
+   Navegação por abas
+   ===================================================================== */
+function switchTab(t) {
+  if (!['prospect', 'demo', 'whatsapp', 'crm'].includes(t)) t = 'prospect';
+  $$('.tab-panel').forEach((p) => p.classList.toggle('hidden', p.id !== 'tab-' + t));
+  $$('.tab-btn').forEach((b) => b.classList.toggle('active', b.dataset.tab === t));
+  try { history.replaceState(null, '', '#' + t); } catch (e) {}
+  if (t === 'demo') { renderDemoPicker(); renderDemo(); }
+  if (t === 'whatsapp') {
+    if (!state.wa.name && state.demo) {
+      const b = findBiz(state.demo.bizId);
+      if (b) Object.assign(state.wa, { leadId: b.id, name: b.name, phone: b.phone || '', nicheKey: b.nicheKey, city: b.city || '', link: suggestLink(b.name) });
+    }
+    renderWaPicker(); fillWaForm(); renderTemplates();
+  }
+  if (t === 'crm') renderCRM();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  icons();
+}
+
+/* =====================================================================
+   Aba 1 — Prospecção (Nominatim + Overpass)
+   ===================================================================== */
+async function geocodeCity(city, uf) {
+  const base = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=br&accept-language=pt-BR';
+  let data = await fetchJSON(`${base}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(UF_NAME[uf] || uf)}`, {}, 15000);
+  if (!data || !data.length) data = await fetchJSON(`${base}&q=${encodeURIComponent(`${city}, ${UF_NAME[uf] || uf}, Brasil`)}`, {}, 15000);
+  if (!data || !data.length) return null;
+  const best = data.find((d) => d.osm_type === 'relation') || data[0];
+  const [s, n, w, e] = best.boundingbox.map(Number);
+  return { osmType: best.osm_type, osmId: Number(best.osm_id), bbox: [s, w, n, e], name: best.name || city };
+}
+
+async function overpassSearch(place, niche) {
+  const useArea = place.osmType === 'relation';
+  const scope = useArea ? 'area.a' : place.bbox.join(',');
+  const head = useArea ? `area(id:${3600000000 + place.osmId})->.a;` : '';
+  const body = niche.osm.map((f) => `  nwr${f}["name"][!"website"][!"contact:website"][!"url"](${scope});`).join('\n');
+  const q = `[out:json][timeout:25];\n${head}\n(\n${body}\n);\nout center 120;`;
+  let lastErr;
+  for (const ep of OVERPASS_ENDPOINTS) {
+    try {
+      const d = await fetchJSON(ep, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, 35000);
+      if (d && Array.isArray(d.elements)) return d.elements;
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('Overpass indisponível');
+}
+
+function mapElement(el, nicheKey, city, uf) {
+  const t = el.tags || {};
+  const lat = el.lat ?? el.center?.lat ?? null;
+  const lon = el.lon ?? el.center?.lon ?? null;
+  const street = [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(', ');
+  const hood = t['addr:suburb'] || t['addr:neighbourhood'] || t['addr:district'] || '';
+  const cityName = t['addr:city'] || city;
+  const address = street ? [street, hood, `${cityName} - ${uf}`].filter(Boolean).join(' · ') : '';
+  return {
+    id: `osm-${el.type}-${el.id}`,
+    name: t.name, nicheKey, city: cityName, uf, address,
+    phone: t.phone || t['contact:phone'] || t['contact:mobile'] || t.mobile || t['contact:whatsapp'] || '',
+    rating: t.stars || t.rating || '', reviews: '',
+    hours: t.opening_hours || '',
+    instagram: t['contact:instagram'] || t.instagram || '',
+    lat, lon, osmUrl: `https://www.openstreetmap.org/${el.type}/${el.id}`,
+    source: 'osm',
+  };
+}
+
+function sampleData(nicheKey, city, uf) {
+  const n = nicheOf(nicheKey);
+  const r = rng(hashStr(nicheKey + '|' + city + '|' + uf));
+  const pick = (arr) => arr[Math.floor(r() * arr.length)];
+  const streets = ['Rua das Flores', 'Av. Brasil', 'Rua XV de Novembro', 'Rua São José', 'Av. Getúlio Vargas', 'Rua Sete de Setembro', 'Rua Tiradentes', 'Av. Santos Dumont', 'Rua Marechal Deodoro', 'Rua Dom Pedro II'];
+  const hoods = ['Centro', 'Jardim América', 'Vila Nova', 'Santa Cruz', 'São Francisco', 'Boa Vista', 'Jardim Paulista', 'Vila Rica'];
+  const ddd = DDD[uf] || 11;
+  const d4 = () => String(Math.floor(1000 + r() * 8999));
+  return n.samples.map((name, i) => ({
+    id: `demo-${nicheKey}-${slug(city)}-${uf}-${i}`,
+    name, nicheKey, city, uf,
+    address: r() > 0.12 ? `${pick(streets)}, ${Math.floor(30 + r() * 1900)} · ${pick(hoods)} · ${city} - ${uf}` : '',
+    phone: r() > 0.18 ? `(${ddd}) 9${d4()}-${d4()}` : '',
+    rating: r() > 0.25 ? (4.1 + r() * 0.85).toFixed(1) : '',
+    reviews: Math.floor(14 + r() * 260),
+    hours: r() > 0.35 ? n.hours : '',
+    instagram: r() > 0.5 ? '@' + slug(name).replace(/-/g, '') : '',
+    lat: null, lon: null, osmUrl: '',
+    source: 'demo',
+  }));
+}
+
+function setStatus(type, html) {
+  const box = $('#searchStatus');
+  if (!type) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+  const s = {
+    loading: ['border-blue-400/20 bg-blue-500/[0.07] text-blue-100', '<i data-lucide="loader-2" class="spin h-4 w-4 flex-none text-blue-300"></i>'],
+    ok: ['border-emerald-400/20 bg-emerald-500/[0.07] text-emerald-100', '<i data-lucide="check-circle-2" class="h-4 w-4 flex-none text-emerald-300"></i>'],
+    warn: ['border-amber-400/20 bg-amber-500/[0.07] text-amber-100', '<i data-lucide="alert-triangle" class="h-4 w-4 flex-none text-amber-300"></i>'],
+  }[type];
+  box.className = `mt-5 flex items-start gap-3 rounded-xl border px-4 py-3 text-sm ${s[0]}`;
+  box.innerHTML = `${s[1]}<div class="leading-relaxed">${html}</div>`;
+  icons();
+}
+
+async function searchBusinesses() {
+  if (state.searching) return;
+  const nicheKey = $('#fNiche').value, uf = $('#fState').value, city = $('#fCity').value.trim();
+  if (!city) { toast('Digite o nome da cidade', 'warn'); $('#fCity').focus(); return; }
+  persist(LS_QUERY, { nicheKey, uf, city });
+  const niche = nicheOf(nicheKey);
+  state.searching = true;
+  const btn = $('#searchBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i data-lucide="loader-2" class="spin h-4 w-4"></i><span>Buscando…</span>';
+  $('#resultsToolbar').classList.add('hidden');
+  $('#results').innerHTML = Array.from({ length: 6 }, () => `
+    <div class="glass space-y-4 rounded-2xl p-5">
+      <div class="flex gap-3"><div class="skeleton h-12 w-12"></div><div class="flex-1 space-y-2"><div class="skeleton h-4 w-3/4"></div><div class="skeleton h-3 w-1/2"></div></div></div>
+      <div class="skeleton h-3 w-full"></div><div class="skeleton h-3 w-5/6"></div><div class="skeleton h-3 w-2/3"></div>
+      <div class="grid grid-cols-2 gap-2"><div class="skeleton h-9"></div><div class="skeleton h-9"></div></div>
+    </div>`).join('');
+  icons();
+  try {
+    setStatus('loading', `Localizando <b>${esc(city)}/${uf}</b> no mapa…`);
+    const place = await geocodeCity(city, uf);
+    if (!place) throw new Error('cidade não encontrada no mapa');
+    setStatus('loading', `Consultando o OpenStreetMap: <b>${esc(niche.plural)}</b> em <b>${esc(place.name)}</b> sem site cadastrado… (pode levar alguns segundos)`);
+    const els = await overpassSearch(place, niche);
+    const seen = new Set();
+    const items = els.map((el) => mapElement(el, nicheKey, city, uf)).filter((b) => {
+      if (!b.name) return false;
+      const k = b.name.toLowerCase().trim() + '|' + (b.lat ? b.lat.toFixed(3) : '') ;
+      if (seen.has(k)) return false; seen.add(k); return true;
+    });
+    if (!items.length) throw new Error('nenhum estabelecimento sem site encontrado para esse nicho');
+    state.results = items; state.isSample = false;
+    setStatus('ok', `<b>${items.length}</b> ${esc(niche.plural)} sem site encontradas em <b>${esc(city)}/${uf}</b>. Fonte: OpenStreetMap.`);
+  } catch (err) {
+    console.warn('[LocalSite OS] busca falhou:', err);
+    const reason = err && err.name === 'AbortError' ? 'tempo de resposta esgotado' : (err && err.message) || 'erro desconhecido';
+    state.results = sampleData(nicheKey, city, uf); state.isSample = true;
+    setStatus('warn', `Não foi possível obter dados reais agora (<i>${esc(reason)}</i>). Exibindo <b>dados de exemplo</b> para você testar a plataforma — tente novamente em instantes ou mude a cidade.`);
+  } finally {
+    state.searching = false;
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="search" class="h-4 w-4"></i><span>Buscar Sem Site</span>';
+    renderResults();
+  }
+}
+
+function emptyProspectHTML() {
+  const steps = [['search', 'Busque', 'Escolha nicho, estado e cidade.'], ['wand-sparkles', 'Gere o site', 'Um site demo pronto em 1 clique.'], ['send', 'Aborde', 'Envie a prévia pelo WhatsApp.'], ['badge-check', 'Feche', 'Acompanhe tudo no CRM.']];
+  return `<div class="col-span-full glass rounded-2xl p-8 sm:p-10">
+    <div class="mx-auto max-w-3xl text-center">
+      <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-500/20 to-violet-500/20 ring-1 ring-violet-400/30"><i data-lucide="map-pinned" class="h-7 w-7 text-violet-300"></i></div>
+      <h3 class="text-xl font-bold text-white">Sua próxima venda está a uma busca de distância</h3>
+      <p class="mt-2 text-sm text-slate-400">Milhares de pequenos negócios ainda não têm site. Encontre os da sua região e chegue com uma proposta pronta.</p>
+      <div class="mt-8 grid gap-3 text-left sm:grid-cols-4">
+        ${steps.map(([ic, t, d], i) => `<div class="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4"><div class="mb-3 flex items-center justify-between"><i data-lucide="${ic}" class="h-5 w-5 text-blue-300"></i><span class="font-mono text-[10px] text-slate-500">0${i + 1}</span></div><p class="text-sm font-semibold text-white">${t}</p><p class="mt-1 text-xs text-slate-400">${d}</p></div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function cardHTML(b) {
+  const n = nicheOf(b.nicheKey);
+  const saved = isSaved(b.id);
+  const sc = score(b);
+  const scColor = sc >= 80 ? 'text-emerald-300' : sc >= 60 ? 'text-amber-300' : 'text-slate-400';
+  const scLabel = sc >= 80 ? 'Alta' : sc >= 60 ? 'Média' : 'Baixa';
+  const tel = waDigits(b.phone);
+  const mapUrl = b.osmUrl || (b.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + ' ' + b.address)}` : '');
+  const addr = b.address
+    ? `<span class="text-slate-300">${esc(b.address)}</span>`
+    : `<span class="text-slate-500">Endereço não cadastrado no mapa.</span>${b.lat ? ` <button data-action="reverse" data-id="${b.id}" class="font-medium text-blue-300 underline underline-offset-2 hover:text-blue-200">Descobrir pelo mapa</button>` : ''}`;
+  return `<article class="card-in glass flex flex-col gap-4 rounded-2xl p-5 transition hover:border-violet-400/30 hover:bg-white/[0.04]">
+    <div class="flex items-start gap-3">
+      <div class="grid h-12 w-12 flex-none place-items-center rounded-xl text-2xl" style="background:linear-gradient(135deg,${rgba(n.c1, 0.28)},${rgba(n.c2, 0.28)});box-shadow:inset 0 0 0 1px ${rgba(n.c1, 0.35)}">${n.emoji}</div>
+      <div class="min-w-0 flex-1">
+        <h3 class="truncate text-[15px] font-bold text-white" title="${esc(b.name)}">${esc(b.name)}</h3>
+        <p class="mt-0.5 text-xs text-slate-400">${esc(n.label)} · ${esc(b.city)}/${esc(b.uf)}</p>
+      </div>
+      ${b.source === 'demo' ? '<span class="badge-amber">Exemplo</span>' : '<span class="badge-red"><i data-lucide="globe-lock" class="h-3 w-3"></i>Sem site</span>'}
+    </div>
+    <ul class="space-y-2.5 text-sm">
+      <li class="flex gap-2.5"><i data-lucide="map-pin" class="mt-0.5 h-4 w-4 flex-none text-blue-400"></i><div>${addr}</div></li>
+      <li class="flex gap-2.5"><i data-lucide="phone" class="mt-0.5 h-4 w-4 flex-none text-violet-400"></i>${b.phone ? `<a href="tel:+${tel}" class="text-slate-200 hover:text-white">${esc(formatPhone(b.phone))}</a>` : '<span class="text-slate-500">Telefone não informado</span>'}</li>
+      <li class="flex gap-2.5"><i data-lucide="star" class="mt-0.5 h-4 w-4 flex-none text-amber-400"></i>${b.rating ? `<span><b class="text-amber-200">${esc(b.rating)}</b> <span class="tracking-tight text-amber-300/90">${stars(b.rating)}</span>${b.reviews ? ` <span class="text-slate-500">(${esc(b.reviews)} avaliações)</span>` : ''}</span>` : '<span class="text-slate-500">Sem avaliações públicas</span>'}</li>
+      ${b.hours ? `<li class="flex gap-2.5"><i data-lucide="clock" class="mt-0.5 h-4 w-4 flex-none text-slate-500"></i><span class="text-slate-400">${esc(ptHours(b.hours))}</span></li>` : ''}
+    </ul>
+    <div>
+      <div class="mb-1.5 flex justify-between font-mono text-[10.5px] uppercase tracking-wider"><span class="text-slate-500">Oportunidade</span><span class="${scColor}">${scLabel} · ${sc}%</span></div>
+      <div class="h-1.5 overflow-hidden rounded-full bg-white/[0.06]"><div class="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500" style="width:${sc}%"></div></div>
+    </div>
+    <div class="mt-auto grid grid-cols-2 gap-2">
+      <button class="btn btn-primary btn-sm" data-action="demo" data-id="${b.id}"><i data-lucide="wand-sparkles" class="h-4 w-4"></i>Gerar Site Demo</button>
+      <button class="btn btn-sm ${saved ? 'border border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/15' : 'btn-ghost'}" data-action="save" data-id="${b.id}"><i data-lucide="${saved ? 'bookmark-check' : 'bookmark-plus'}" class="h-4 w-4"></i>${saved ? 'Salvo no CRM' : 'Salvar no CRM'}</button>
+    </div>
+    <div class="flex items-center justify-between border-t border-white/[0.06] pt-3 text-xs">
+      <button data-action="whats" data-id="${b.id}" class="inline-flex items-center gap-1.5 font-medium text-emerald-300 hover:text-emerald-200"><i data-lucide="message-circle" class="h-3.5 w-3.5"></i>Abordar no WhatsApp</button>
+      ${mapUrl ? `<a href="${esc(mapUrl)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-slate-400 hover:text-white"><i data-lucide="map" class="h-3.5 w-3.5"></i>Ver no mapa</a>` : ''}
+    </div>
+  </article>`;
+}
+
+function filteredResults() {
+  const f = state.filter;
+  let list = state.results.filter((b) => (!f.text || b.name.toLowerCase().includes(f.text.toLowerCase())) && (!f.phone || b.phone));
+  if (f.sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  else list.sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name, 'pt-BR'));
+  return list;
+}
+
+function renderResults() {
+  const box = $('#results');
+  const bar = $('#resultsToolbar');
+  if (!state.results.length) { box.innerHTML = emptyProspectHTML(); bar.classList.add('hidden'); bar.classList.remove('flex'); icons(); return; }
+  bar.classList.remove('hidden'); bar.classList.add('flex');
+  const list = filteredResults();
+  $('#resultsCount').innerHTML = `<b class="text-white">${list.length}</b> de ${state.results.length} estabelecimentos ${state.isSample ? '<span class="text-amber-300">(dados de exemplo)</span>' : 'sem site'}`;
+  box.innerHTML = list.length ? list.map(cardHTML).join('') : `<div class="col-span-full glass rounded-2xl p-8 text-center text-sm text-slate-400">Nenhum resultado com esses filtros.</div>`;
+  icons();
+}
+
+async function reverseGeocode(id, btn) {
+  const b = findBiz(id);
+  if (!b || !b.lat) return;
+  btn.disabled = true; btn.textContent = 'Buscando…';
+  try {
+    const d = await fetchJSON(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&accept-language=pt-BR&lat=${b.lat}&lon=${b.lon}`, {}, 15000);
+    const a = d.address || {};
+    const street = [a.road || a.pedestrian || a.footway, a.house_number].filter(Boolean).join(', ');
+    const hood = a.suburb || a.neighbourhood || a.quarter || '';
+    const addr = [street || 'Próximo a ' + (d.name || 'ponto no mapa'), hood, `${a.city || a.town || a.village || b.city} - ${b.uf}`].filter(Boolean).join(' · ');
+    b.address = addr;
+    const lead = state.leads.find((l) => l.id === id); if (lead) { lead.address = addr; persist(LS_LEADS, state.leads); }
+    toast('Endereço encontrado', 'ok');
+  } catch (e) {
+    toast('Não foi possível obter o endereço agora', 'err');
+  }
+  renderResults();
+}
+
+/* =====================================================================
+   Aba 2 — Gerador de site demo
+   ===================================================================== */
+const WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.75-.72 2-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.04 21.5h-.01a9.45 9.45 0 0 1-4.82-1.32l-.35-.21-3.58.94.96-3.49-.23-.36a9.43 9.43 0 0 1-1.45-5.03c0-5.22 4.25-9.47 9.48-9.47 2.53 0 4.91.99 6.7 2.78a9.41 9.41 0 0 1 2.77 6.7c0 5.22-4.25 9.46-9.47 9.46zm8.06-17.53A11.33 11.33 0 0 0 12.04.63C5.76.63.65 5.74.65 12.02c0 2.01.52 3.97 1.52 5.7L.55 23.63l6.05-1.59a11.37 11.37 0 0 0 5.43 1.38h.01c6.28 0 11.39-5.11 11.39-11.39 0-3.04-1.18-5.9-3.33-8.06z"/></svg>';
+
+function buildSite(d) {
+  const n = nicheOf(d.nicheKey);
+  const c1 = d.color || n.c1, c2 = d.color2 || n.c2;
+  const a = rgba;
+  const name = esc(d.name || 'Seu Negócio');
+  const city = esc(d.city || 'sua cidade');
+  const uf = esc(d.uf || '');
+  const tagline = esc(d.tagline || n.tagline);
+  const about = esc(d.about || '').replace(/\n/g, '<br>');
+  const digits = waDigits(d.phone);
+  const wa = digits ? `https://wa.me/${digits}?text=${encodeURIComponent(`Olá! Vim pelo site da ${d.name} e gostaria de mais informações.`)}` : '#contato';
+  const waAttr = digits ? ' target="_blank" rel="noopener"' : '';
+  const phoneFmt = d.phone ? esc(formatPhone(d.phone)) : 'Em breve';
+  const hours = esc(d.hours || n.hours);
+  const address = esc(d.address || `${d.city || ''}${uf ? ' - ' + uf : ''}`);
+  const ig = String(d.instagram || '').trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/\/.*$/, '');
+  const lat = Number(d.lat), lon = Number(d.lon);
+  const hasMap = d.lat != null && d.lat !== '' && Number.isFinite(lat) && Number.isFinite(lon);
+  const mapSrc = hasMap ? `https://www.openstreetmap.org/export/embed.html?bbox=${(lon - 0.006).toFixed(5)}%2C${(lat - 0.004).toFixed(5)}%2C${(lon + 0.006).toFixed(5)}%2C${(lat + 0.004).toFixed(5)}&amp;layer=mapnik&amp;marker=${lat.toFixed(5)}%2C${lon.toFixed(5)}` : '';
+  const routeUrl = hasMap ? `https://www.google.com/maps/search/?api=1&amp;query=${lat},${lon}` : `https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent((d.name || '') + ' ' + (d.address || d.city || ''))}`;
+  const year = new Date().getFullYear();
+  const dev = state.settings.devName ? `Site demonstrativo criado por ${esc(state.settings.devName)}` : 'Site demonstrativo';
+  const devWa = waDigits(state.settings.devPhone);
+  const devCredit = devWa ? `<a href="https://wa.me/${devWa}" target="_blank" rel="noopener">${dev}</a>` : dev;
+  const services = n.services.map(([e, t, ds]) => `<div class="service reveal"><div class="sicon">${e}</div><h3>${esc(t)}</h3><p>${esc(ds)}</p></div>`).join('');
+  const angles = [135, 160, 200, 120, 220, 100];
+  const gallery = n.gallery.map(([e, cap], i) => `<figure class="g g${i} reveal" style="background:linear-gradient(${angles[i]}deg,${i % 2 ? c2 : c1},${a(i % 2 ? c1 : c2, 0.85)})"><span>${e}</span><figcaption>${esc(cap)}</figcaption></figure>`).join('');
+  const highlights = n.highlights.map((h) => `<li>${esc(h)}</li>`).join('');
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${name} | ${esc(n.label)} em ${city}</title>
+<meta name="description" content="${tagline}. ${esc(n.label)} em ${city}${uf ? ' - ' + uf : ''}.">
+<meta property="og:title" content="${name}">
+<meta property="og:description" content="${tagline}">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="${c1}">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${n.emoji}</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.className='js'<\/script>
+<style>
+:root{--c1:${c1};--c2:${c2};--ink:#111318;--text:#2b303b;--muted:#6b7280;--bg:#fbfaf8;--line:#ececec}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+section{padding:96px 0;scroll-margin-top:68px}
+header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.12rem;color:var(--ink);letter-spacing:-.01em;min-width:0}
+.brand b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand i{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-size:20px;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 8px 20px -8px ${a(c1, 0.7)}}
+.links{display:flex;align-items:center;gap:28px;font-weight:500;font-size:.95rem;color:#3f4350}
+.links a:not(.btn):hover{color:var(--c1)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 24px;border-radius:999px;font-weight:600;font-size:.98rem;border:0;cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s;font-family:inherit}
+.btn svg{width:19px;height:19px}
+.btn-main{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 12px 28px -10px ${a(c1, 0.75)}}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 34px -10px ${a(c1, 0.9)}}
+.btn-line{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.35)}
+.btn-line:hover{background:rgba(255,255,255,.16)}
+.btn-sm{padding:10px 18px;font-size:.9rem}
+.burger{display:none;flex:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:20px;color:var(--ink)}
+.hero{position:relative;overflow:hidden;color:#fff;background:#0e0f13;padding:0}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 85% 15%,${a(c1, 0.55)},transparent 60%),radial-gradient(50% 60% at 8% 95%,${a(c2, 0.6)},transparent 60%)}
+.hero:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:linear-gradient(to bottom,#000,transparent);mask-image:linear-gradient(to bottom,#000,transparent)}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-top:96px;padding-bottom:110px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:.85rem;font-weight:500}
+.hero h1{font-size:clamp(2.3rem,5.2vw,4.1rem);line-height:1.05;letter-spacing:-.03em;font-weight:800;margin:20px 0 18px}
+.lead{font-size:1.15rem;color:rgba(255,255,255,.8);max-width:540px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.trust{display:flex;flex-wrap:wrap;gap:30px;margin-top:40px;font-size:.88rem;color:rgba(255,255,255,.7)}
+.trust b{display:block;font-size:1.3rem;color:#fff;font-weight:700}
+.visual{position:relative;aspect-ratio:1;max-width:420px;width:100%;justify-self:center}
+.orb{position:absolute;inset:9%;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2));display:grid;place-items:center;font-size:clamp(5.5rem,13vw,9rem);box-shadow:0 40px 80px -30px ${a(c1, 0.85)},inset 0 -24px 60px rgba(0,0,0,.25);animation:float 6s ease-in-out infinite}
+.orb:before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1.5px dashed rgba(255,255,255,.25)}
+.tag{position:absolute;background:#fff;color:var(--ink);border-radius:16px;padding:12px 16px;font-size:.88rem;font-weight:600;box-shadow:0 20px 40px -18px rgba(0,0,0,.55);display:flex;align-items:center;gap:10px;line-height:1.3}
+.tag small{display:block;font-weight:500;color:var(--muted);font-size:.75rem}
+.t1{top:4%;left:-2%}.t2{bottom:6%;right:-2%}
+@keyframes float{50%{transform:translateY(-12px)}}
+.eyebrow{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c1);margin-bottom:12px}
+h2{font-size:clamp(1.9rem,3.6vw,2.7rem);line-height:1.12;letter-spacing:-.02em;color:var(--ink);font-weight:800}
+.sub{color:var(--muted);font-size:1.05rem;max-width:620px;margin-top:14px}
+.center{text-align:center}.center .sub{margin-left:auto;margin-right:auto}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.about-art{position:relative;border-radius:28px;aspect-ratio:4/3.4;background:linear-gradient(135deg,${a(c1, 0.16)},${a(c2, 0.22)});display:grid;place-items:center;font-size:7.5rem;overflow:hidden;border:1px solid var(--line)}
+.about-art:after{content:"";position:absolute;width:60%;aspect-ratio:1;border-radius:50%;background:${a(c1, 0.18)};filter:blur(40px);top:-10%;right:-10%}
+.badge{position:absolute;left:22px;bottom:22px;background:#fff;border-radius:18px;padding:14px 18px;box-shadow:0 18px 40px -18px rgba(0,0,0,.3);font-size:.9rem;line-height:1.3;z-index:1}
+.badge b{display:block;font-size:1.35rem;color:var(--c1)}
+.checks{list-style:none;margin-top:26px;display:grid;gap:12px}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-weight:500;color:var(--ink)}
+.checks li:before{content:"✓";flex:none;width:24px;height:24px;border-radius:50%;background:${a(c1, 0.14)};color:var(--c1);display:grid;place-items:center;font-weight:800;font-size:.8rem;margin-top:1px}
+.mt{margin-top:30px}
+.soft{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+.service{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;transition:transform .25s,box-shadow .25s,border-color .25s}
+.service:hover{transform:translateY(-4px);box-shadow:0 24px 50px -28px ${a(c1, 0.6)};border-color:${a(c1, 0.35)}}
+.sicon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:1.7rem;background:linear-gradient(135deg,${a(c1, 0.14)},${a(c2, 0.18)});margin-bottom:18px}
+.service h3{font-size:1.15rem;color:var(--ink);margin-bottom:6px}
+.service p{color:var(--muted);font-size:.96rem}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:16px;margin-top:52px}
+.g{position:relative;border-radius:22px;overflow:hidden;display:grid;place-items:center;font-size:4rem}
+.g:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.25),transparent 55%)}
+.g span{position:relative;transition:transform .4s;filter:drop-shadow(0 12px 18px rgba(0,0,0,.25))}
+.g:hover span{transform:scale(1.12) rotate(-4deg)}
+.g figcaption{position:absolute;left:14px;bottom:14px;font-size:.85rem;font-weight:600;color:#fff;background:rgba(0,0,0,.32);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:6px 12px;border-radius:999px}
+.g0{grid-column:span 2;grid-row:span 2;font-size:6.5rem}
+.g3{grid-column:span 2}
+.note{margin-top:18px;font-size:.85rem;color:var(--muted);text-align:center}
+.contact{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;margin-top:52px}
+.info{display:grid;gap:14px;align-content:start}
+.item{display:flex;gap:16px;align-items:center;padding:18px 20px;background:#fff;border:1px solid var(--line);border-radius:18px;transition:border-color .2s,transform .2s}
+a.item:hover{border-color:var(--c1);transform:translateX(3px)}
+.ico{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:${a(c1, 0.12)};font-size:1.25rem}
+.item small{display:block;color:var(--muted);font-size:.8rem}
+.item strong{color:var(--ink);font-weight:600;word-break:break-word}
+.map{border-radius:22px;overflow:hidden;border:1px solid var(--line);min-height:380px;background:linear-gradient(135deg,${a(c1, 0.12)},${a(c2, 0.16)})}
+.map iframe{width:100%;height:100%;min-height:380px;border:0;display:block}
+.map-empty{height:100%;min-height:380px;display:grid;place-items:center;text-align:center;padding:30px;color:var(--ink)}
+.map-empty div{font-size:3.5rem;margin-bottom:10px}
+.band{margin-top:56px;border-radius:28px;padding:44px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
+.band:after{content:"${n.emoji}";position:absolute;right:-10px;top:-30px;font-size:10rem;opacity:.12;pointer-events:none}
+.band h3{font-size:1.7rem;line-height:1.2;letter-spacing:-.02em;position:relative;z-index:1}
+.band p{opacity:.85;position:relative;z-index:1}
+.band .btn{background:#fff;color:var(--ink);position:relative;z-index:1}
+footer{background:#0e0f13;color:rgba(255,255,255,.6);padding:40px 0;font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer .brand{color:#fff}
+footer a:hover{color:#fff}
+.wa-float{position:fixed;right:20px;bottom:20px;z-index:50;width:60px;height:60px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;box-shadow:0 14px 30px -8px rgba(37,211,102,.6);animation:pulse 2.4s infinite}
+.wa-float svg{width:32px;height:32px}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.55)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.js .reveal.on{opacity:1;transform:none}
+@media (max-width:900px){
+  .links{display:none;position:absolute;top:70px;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;background:#fff;padding:12px 22px 22px;border-bottom:1px solid var(--line);box-shadow:0 24px 30px -20px rgba(0,0,0,.2)}
+  .links.open{display:flex}
+  .links a{padding:11px 0}
+  .links .btn{margin-top:8px}
+  .burger{display:grid;place-items:center}
+  .hero .wrap{grid-template-columns:1fr;padding-top:60px;padding-bottom:80px;gap:30px}
+  .visual{max-width:290px}
+  .about,.contact{grid-template-columns:1fr}
+  .about{gap:36px}
+  .grid3{grid-template-columns:1fr 1fr}
+  .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:150px}
+  section{padding:72px 0}
+}
+@media (max-width:560px){
+  .grid3{grid-template-columns:1fr}
+  .g0{grid-row:span 1;font-size:4.5rem}
+  .band{padding:30px}
+  .band h3{font-size:1.4rem}
+  .t1{left:0}.t2{right:0}
+  .trust{gap:22px}
+  .cta .btn{flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="brand"><i>${n.emoji}</i><b>${name}</b></a>
+    <nav class="links" id="menu">
+      <a href="#inicio">Início</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#contato">Contato</a>
+      <a class="btn btn-main btn-sm" href="${wa}"${waAttr}>${WA_SVG} WhatsApp</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Abrir menu">☰</button>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <span class="pill">📍 ${city}${uf ? ' · ' + uf : ''}</span>
+      <h1>${name}</h1>
+      <p class="lead">${tagline}</p>
+      <div class="cta">
+        <a class="btn btn-main" href="${wa}"${waAttr}>${WA_SVG} ${esc(n.cta)}</a>
+        <a class="btn btn-line" href="#servicos">Ver serviços</a>
+      </div>
+      <div class="trust">
+        <div><b>${d.rating ? esc(d.rating) + ' ★' : 'Top'}</b>${d.rating ? 'avaliação dos clientes' : 'qualidade garantida'}</div>
+        <div><b>Rápido</b>atendimento no WhatsApp</div>
+        <div><b>${city}</b>orgulho local</div>
+      </div>
+    </div>
+    <div class="visual">
+      <div class="orb">${n.emoji}</div>
+      <div class="tag t1">⭐<span>Clientes satisfeitos<small>atendimento de verdade</small></span></div>
+      <div class="tag t2">🕒<span>Funcionamento<small>${hours}</small></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="wrap about">
+    <div class="about-art reveal">${n.emoji}<div class="badge"><b>${city}</b>atendendo a região com carinho</div></div>
+    <div class="reveal">
+      <span class="eyebrow">Sobre nós</span>
+      <h2>Conheça a ${name}</h2>
+      <p class="sub">${about}</p>
+      <ul class="checks">${highlights}</ul>
+      <a class="btn btn-main mt" href="${wa}"${waAttr}>${WA_SVG} Fale com a gente</a>
+    </div>
+  </div>
+</section>
+
+<section id="servicos" class="soft">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="eyebrow">O que oferecemos</span>
+      <h2>Nossos serviços</h2>
+      <p class="sub">Tudo o que você procura, com a qualidade e o cuidado que a ${name} entrega todos os dias.</p>
+    </div>
+    <div class="grid3">${services}</div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="eyebrow">Galeria</span>
+      <h2>Um pouco do nosso dia a dia</h2>
+      <p class="sub">Venha conhecer de perto — cada detalhe é pensado para você.</p>
+    </div>
+    <div class="gallery">${gallery}</div>
+    <p class="note">Imagens ilustrativas · substitua pelas fotos reais do estabelecimento.</p>
+  </div>
+</section>
+
+<section id="contato" class="soft">
+  <div class="wrap">
+    <div class="center reveal">
+      <span class="eyebrow">Contato</span>
+      <h2>Venha nos visitar</h2>
+      <p class="sub">Tire dúvidas, faça seu pedido ou agende um horário. Respondemos rapidinho!</p>
+    </div>
+    <div class="contact">
+      <div class="info">
+        <a class="item reveal" href="${wa}"${waAttr}><span class="ico">💬</span><span><small>WhatsApp</small><strong>${phoneFmt}</strong></span></a>
+        <a class="item reveal" href="${routeUrl}" target="_blank" rel="noopener"><span class="ico">📍</span><span><small>Endereço · como chegar</small><strong>${address}</strong></span></a>
+        <div class="item reveal"><span class="ico">🕒</span><span><small>Horário de funcionamento</small><strong>${hours}</strong></span></div>
+        ${ig ? `<a class="item reveal" href="https://instagram.com/${esc(ig)}" target="_blank" rel="noopener"><span class="ico">📸</span><span><small>Instagram</small><strong>@${esc(ig)}</strong></span></a>` : ''}
+      </div>
+      <div class="map reveal">${hasMap ? `<iframe src="${mapSrc}" loading="lazy" title="Mapa de localização"></iframe>` : `<div class="map-empty"><span><div>🗺️</div><strong>${address}</strong><br><a href="${routeUrl}" target="_blank" rel="noopener" style="color:var(--c1);font-weight:600">Abrir no Google Maps →</a></span></div>`}</div>
+    </div>
+    <div class="band reveal">
+      <div><h3>Fale agora com a ${name}</h3><p>Atendimento rápido e sem complicação pelo WhatsApp.</p></div>
+      <a class="btn" href="${wa}"${waAttr}>${WA_SVG} Chamar no WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><i>${n.emoji}</i><b>${name}</b></span>
+    <span>© ${year} ${name}. Todos os direitos reservados.</span>
+    <span>${devCredit}</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="${wa}"${waAttr} aria-label="Fale pelo WhatsApp">${WA_SVG}</a>
+
+<script>
+(function(){
+  var b=document.getElementById('burger'),m=document.getElementById('menu');
+  b.addEventListener('click',function(){m.classList.toggle('open')});
+  document.querySelectorAll('a[href^="#"]').forEach(function(l){
+    l.addEventListener('click',function(e){
+      var id=l.getAttribute('href'); if(id.length<2) return;
+      var t=document.querySelector(id); if(!t) return;
+      e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); m.classList.remove('open');
+    });
+  });
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}})},{threshold:.1});
+    els.forEach(function(el){io.observe(el)});
+  } else { els.forEach(function(el){el.classList.add('on')}); }
+})();
+<\/script>
+</body>
+</html>`;
+}
+
+function demoFromBiz(b) {
+  const n = nicheOf(b.nicheKey);
+  return {
+    bizId: b.id, nicheKey: b.nicheKey, name: b.name,
+    tagline: n.tagline,
+    about: n.about.replace(/\{nome\}/g, b.name).replace(/\{cidade\}/g, b.city || 'sua cidade'),
+    phone: b.phone || '', address: b.address || `${b.city || ''} - ${b.uf || ''}`,
+    hours: ptHours(b.hours) || n.hours, instagram: b.instagram || '', rating: b.rating || '',
+    color: n.c1, color2: n.c2, city: b.city, uf: b.uf, lat: b.lat, lon: b.lon,
+  };
+}
+
+function openDemo(id) {
+  const b = findBiz(id);
+  if (!b) return toast('Empresa não encontrada', 'err');
+  state.demo = demoFromBiz(b);
+  fillDemoForm();
+  switchTab('demo');
+}
+
+function useSampleDemo() {
+  const nk = $('#fNiche').value || 'hamburgueria';
+  const city = $('#fCity').value.trim() || 'São Paulo';
+  const uf = $('#fState').value || 'SP';
+  const b = sampleData(nk, city, uf)[0];
+  b.phone = b.phone || `(${DDD[uf] || 11}) 98888-7777`;
+  state.extra[b.id] = b;
+  state.demo = demoFromBiz(b);
+  fillDemoForm(); renderDemoPicker(); renderDemo();
+}
+
+function renderDemoPicker() {
+  const sel = $('#dPick');
+  const cur = state.demo?.bizId || '';
+  const resIds = new Set(state.results.map((r) => r.id));
+  const opt = (b) => `<option value="${esc(b.id)}" ${b.id === cur ? 'selected' : ''}>${esc(b.name)} — ${esc(b.city || '')}</option>`;
+  let html = `<option value="" ${cur ? '' : 'selected'}>Selecione uma empresa…</option>`;
+  if (state.results.length) html += `<optgroup label="Resultados da busca">${state.results.map(opt).join('')}</optgroup>`;
+  const leads = state.leads.filter((l) => !resIds.has(l.id));
+  if (leads.length) html += `<optgroup label="Leads do CRM">${leads.map(opt).join('')}</optgroup>`;
+  const extras = Object.values(state.extra).filter((b) => !resIds.has(b.id) && !isSaved(b.id));
+  if (extras.length) html += `<optgroup label="Exemplos">${extras.map(opt).join('')}</optgroup>`;
+  sel.innerHTML = html;
+}
+
+function fillDemoForm() {
+  const d = state.demo;
+  $$('[data-demo]').forEach((el) => { el.value = d ? (d[el.dataset.demo] ?? '') : (el.type === 'color' ? '#3b82f6' : ''); el.disabled = !d; });
+  $('#demoForm').classList.toggle('opacity-50', !d);
+  $('#presets').innerHTML = PRESETS.map(([a, b]) => `<button type="button" data-action="preset" data-c1="${a}" data-c2="${b}" title="Aplicar paleta" class="h-6 w-6 rounded-full ring-1 ring-white/15 transition hover:scale-110" style="background:linear-gradient(135deg,${a},${b})"></button>`).join('');
+}
+
+function renderDemo() {
+  const has = !!state.demo;
+  $('#demoEmpty').classList.toggle('hidden', has);
+  const shell = $('#deviceShell');
+  shell.className = state.device + (has ? '' : ' hidden');
+  $$('[data-device]').forEach((b) => b.classList.toggle('active', b.dataset.device === state.device));
+  if (!has) return;
+  const html = buildSite(state.demo);
+  const f = $('#preview');
+  let y = 0; try { y = f.contentWindow.scrollY || 0; } catch (e) {}
+  f.onload = () => { try { f.contentWindow.document.documentElement.style.scrollBehavior = 'auto'; f.contentWindow.scrollTo(0, y); f.contentWindow.document.documentElement.style.scrollBehavior = ''; } catch (e) {} };
+  f.srcdoc = html;
+  $('#urlBar').textContent = slug(state.demo.name) + '.netlify.app';
+  if (!$('#fsOverlay').classList.contains('hidden')) $('#fsFrame').srcdoc = html;
+}
+const renderDemoDebounced = debounce(renderDemo, 300);
+
+function setDevice(dv) { state.device = dv; renderDemo(); }
+
+function openFullscreen() {
+  if (!state.demo) return toast('Selecione uma empresa para gerar o site', 'warn');
+  const o = $('#fsOverlay');
+  o.classList.remove('hidden'); o.classList.add('flex');
+  $('#fsTitle').textContent = state.demo.name;
+  $('#fsFrame').srcdoc = buildSite(state.demo);
+  setFsDevice(state.device);
+  document.body.style.overflow = 'hidden';
+  try { const p = o.requestFullscreen && o.requestFullscreen(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+}
+function closeFullscreen() {
+  const o = $('#fsOverlay');
+  o.classList.add('hidden'); o.classList.remove('flex');
+  document.body.style.overflow = '';
+  try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (e) {}
+}
+function setFsDevice(dv) {
+  state.fsDevice = dv;
+  $$('[data-fsdev]').forEach((b) => b.classList.toggle('active', b.dataset.fsdev === dv));
+  $('#fsFrame').className = dv === 'mobile'
+    ? 'my-4 h-[calc(100%-2rem)] w-[390px] max-w-full rounded-[32px] border-[10px] border-black bg-white shadow-2xl'
+    : 'h-full w-full border-0 bg-white';
+}
+
+function downloadSite() {
+  if (!state.demo) return toast('Selecione uma empresa para gerar o site', 'warn');
+  downloadFile(buildSite(state.demo), `${slug(state.demo.name)}.html`, 'text/html;charset=utf-8');
+  toast('Site baixado! Renomeie para index.html e publique no Netlify Drop.', 'ok');
+}
+function openSiteInTab() {
+  if (!state.demo) return toast('Selecione uma empresa para gerar o site', 'warn');
+  const url = URL.createObjectURL(new Blob([buildSite(state.demo)], { type: 'text/html' }));
+  const w = window.open(url, '_blank');
+  if (!w) toast('O navegador bloqueou a nova aba. Use "Baixar Código do Site".', 'warn');
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+async function copySiteCode() {
+  if (!state.demo) return toast('Selecione uma empresa para gerar o site', 'warn');
+  (await copyText(buildSite(state.demo))) ? toast('Código HTML copiado', 'ok') : toast('Não foi possível copiar', 'err');
+}
+
+/* =====================================================================
+   Aba 3 — Abordagem WhatsApp
+   ===================================================================== */
+function openWhats(id) {
+  const b = findBiz(id);
+  if (!b) return;
+  Object.assign(state.wa, { leadId: id, name: b.name, contact: b.contact || '', phone: b.phone || '', nicheKey: b.nicheKey, city: b.city || '', link: suggestLink(b.name) });
+  switchTab('whatsapp');
+}
+
+function renderWaPicker() {
+  const sel = $('#wPick');
+  const cur = state.wa.leadId;
+  const opt = (b) => `<option value="${esc(b.id)}" ${b.id === cur ? 'selected' : ''}>${esc(b.name)} — ${esc(b.city || '')}</option>`;
+  const leadIds = new Set(state.leads.map((l) => l.id));
+  let html = `<option value="">— Preencher manualmente —</option>`;
+  if (state.leads.length) html += `<optgroup label="Leads do CRM">${state.leads.map(opt).join('')}</optgroup>`;
+  const res = state.results.filter((r) => !leadIds.has(r.id));
+  if (res.length) html += `<optgroup label="Resultados da busca">${res.map(opt).join('')}</optgroup>`;
+  sel.innerHTML = html;
+}
+
+function fillWaForm() {
+  if (!state.wa.me) state.wa.me = state.settings.devName || '';
+  if (state.wa.price === '' || state.wa.price == null) state.wa.price = state.settings.price;
+  $$('[data-wa]').forEach((el) => { el.value = state.wa[el.dataset.wa] ?? ''; });
+}
+
+function waVars() {
+  const w = state.wa, n = nicheOf(w.nicheKey);
+  return { name: w.name.trim(), contact: w.contact.trim(), me: w.me.trim(), city: w.city.trim(), link: w.link.trim(), plural: n.plural, art: n.art, priceFmt: brl(w.price || state.settings.price) };
+}
+
+function waUrl(text, mobile) {
+  const d = waDigits(state.wa.phone);
+  const t = encodeURIComponent(text);
+  if (mobile) return d ? `https://wa.me/${d}?text=${t}` : `https://wa.me/?text=${t}`;
+  return d ? `https://web.whatsapp.com/send?phone=${d}&text=${t}` : `https://web.whatsapp.com/send?text=${t}`;
+}
+
+function renderTemplates() {
+  const v = waVars();
+  const colors = ['from-blue-500/25 to-blue-500/5 text-blue-200', 'from-violet-500/25 to-violet-500/5 text-violet-200', 'from-fuchsia-500/25 to-fuchsia-500/5 text-fuchsia-200', 'from-emerald-500/25 to-emerald-500/5 text-emerald-200'];
+  $('#templates').innerHTML = TEMPLATES.map((t, i) => {
+    const msg = t.build(v);
+    return `<div class="card-in glass flex flex-col gap-3 rounded-2xl p-4 sm:p-5">
+      <div class="flex items-start gap-3">
+        <span class="grid h-10 w-10 flex-none place-items-center rounded-xl bg-gradient-to-br ${colors[i]} ring-1 ring-white/10"><i data-lucide="${t.icon}" class="h-5 w-5"></i></span>
+        <div class="min-w-0"><p class="font-mono text-[10px] uppercase tracking-[.16em] text-slate-500">Etapa ${t.step}</p><h3 class="font-bold text-white">${t.title}</h3><p class="text-xs text-slate-400">${t.desc}</p></div>
+      </div>
+      <textarea id="tpl-${i}" data-tpl="${i}" rows="11" class="field min-h-[230px] resize-y text-[13px] leading-relaxed">${esc(msg)}</textarea>
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-ghost btn-sm" data-action="copy-tpl" data-i="${i}"><i data-lucide="copy" class="h-4 w-4"></i>Copiar Mensagem</button>
+        <a class="btn btn-wa btn-sm" data-action="wa-open" data-i="${i}" data-link="web" href="${esc(waUrl(msg, false))}" target="_blank" rel="noopener"><i data-lucide="message-circle" class="h-4 w-4"></i>Abrir WhatsApp Web</a>
+        <a class="btn btn-ghost btn-sm" data-action="wa-open" data-i="${i}" data-link="mobile" href="${esc(waUrl(msg, true))}" target="_blank" rel="noopener" title="Abrir no app do WhatsApp (celular)"><i data-lucide="smartphone" class="h-4 w-4"></i>App</a>
+      </div>
+    </div>`;
+  }).join('');
+  const d = waDigits(state.wa.phone);
+  if (!d) {
+    $('#templates').insertAdjacentHTML('afterbegin', `<div class="col-span-full flex items-center gap-3 rounded-xl border border-amber-400/20 bg-amber-500/[0.07] px-4 py-3 text-sm text-amber-100"><i data-lucide="alert-triangle" class="h-4 w-4 flex-none text-amber-300"></i>Sem número de WhatsApp: as mensagens vão abrir para você escolher o contato manualmente.</div>`);
+  }
+  icons();
+}
+
+function updateTplLinks(i) {
+  const text = $('#tpl-' + i).value;
+  $$(`[data-action="wa-open"][data-i="${i}"]`).forEach((a) => { a.href = waUrl(text, a.dataset.link === 'mobile'); });
+}
+
+function onWaOpen(i) {
+  const t = TEMPLATES[i];
+  if (!$('#wMove').checked || !t.moveTo) return;
+  const lead = state.leads.find((l) => l.id === state.wa.leadId);
+  if (!lead) return;
+  const order = STATUSES.map((s) => s.k);
+  if (order.indexOf(t.moveTo) > order.indexOf(lead.status)) {
+    lead.status = t.moveTo; lead.updatedAt = new Date().toISOString();
+    persist(LS_LEADS, state.leads); updateBadge();
+    toast(`Lead movido para "${STATUSES.find((s) => s.k === t.moveTo).label}"`, 'info');
+  }
+}
+
+/* =====================================================================
+   Aba 4 — CRM
+   ===================================================================== */
+function updateBadge() { $('#crmBadge').textContent = state.leads.length; }
+
+function saveLead(id, silent) {
+  const b = findBiz(id);
+  if (!b) return false;
+  if (isSaved(id)) { if (!silent) toast('Esse negócio já está no CRM', 'info'); return false; }
+  const now = new Date().toISOString();
+  state.leads.unshift({
+    id: b.id, name: b.name, nicheKey: b.nicheKey, city: b.city || '', uf: b.uf || '', address: b.address || '',
+    phone: b.phone || '', rating: b.rating || '', reviews: b.reviews || '', hours: b.hours || '', instagram: b.instagram || '',
+    lat: b.lat ?? null, lon: b.lon ?? null, osmUrl: b.osmUrl || '', source: b.source || 'manual',
+    status: 'novo', value: Number(state.settings.price) || 0, notes: '', contact: '', createdAt: now, updatedAt: now,
+  });
+  persist(LS_LEADS, state.leads); updateBadge();
+  if (!silent) toast(`${b.name} salvo no CRM`, 'ok');
+  return true;
+}
+
+function saveAll() {
+  const list = filteredResults();
+  let c = 0; list.forEach((b) => { if (saveLead(b.id, true)) c++; });
+  toast(c ? `${c} negócios salvos no CRM` : 'Todos já estavam no CRM', c ? 'ok' : 'info');
+  renderResults();
+}
+
+function setLeadStatus(id, status) {
+  const l = state.leads.find((x) => x.id === id);
+  if (!l || l.status === status) return;
+  l.status = status; l.updatedAt = new Date().toISOString();
+  persist(LS_LEADS, state.leads); renderCRM();
+  toast(`${l.name} → ${STATUSES.find((s) => s.k === status).label}`, status === 'fechado' ? 'ok' : 'info');
+}
+
+function deleteLead(id) {
+  const l = state.leads.find((x) => x.id === id);
+  if (!l || !confirm(`Remover "${l.name}" do CRM?`)) return;
+  state.leads = state.leads.filter((x) => x.id !== id);
+  persist(LS_LEADS, state.leads); updateBadge(); renderCRM(); renderResults();
+  toast('Lead removido', 'info');
+}
+
+function crmFiltered() {
+  const q = state.crmSearch.toLowerCase().trim();
+  if (!q) return state.leads;
+  return state.leads.filter((l) => [l.name, l.city, l.phone, l.notes, nicheOf(l.nicheKey).label].join(' ').toLowerCase().includes(q));
+}
+
+function statusSelect(l, extra = '!w-auto') {
+  return `<select data-status-select="${esc(l.id)}" class="field !rounded-lg !px-2 !py-1 text-[11px] ${extra}">${STATUSES.map((s) => `<option value="${s.k}" ${s.k === l.status ? 'selected' : ''}>${s.label}</option>`).join('')}</select>`;
+}
+
+function leadCard(l) {
+  const n = nicheOf(l.nicheKey);
+  const tel = waDigits(l.phone);
+  return `<div draggable="true" data-lead="${esc(l.id)}" class="card-in group cursor-grab rounded-xl border border-white/[0.07] bg-ink-850/80 p-3.5 transition hover:border-violet-400/30 active:cursor-grabbing">
+    <div class="flex items-start gap-2.5">
+      <span class="grid h-9 w-9 flex-none place-items-center rounded-lg text-lg" style="background:linear-gradient(135deg,${rgba(n.c1, 0.28)},${rgba(n.c2, 0.28)})">${n.emoji}</span>
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-semibold text-white" title="${esc(l.name)}">${esc(l.name)}</p>
+        <p class="truncate text-[11px] text-slate-400">${esc(n.label)} · ${esc(l.city)}${l.uf ? '/' + esc(l.uf) : ''}</p>
+      </div>
+      ${l.value ? `<span class="flex-none rounded-md bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[10px] text-emerald-300">${brl(l.value)}</span>` : ''}
+    </div>
+    <div class="mt-2.5 space-y-1 text-xs">
+      ${l.phone ? `<a href="tel:+${tel}" class="flex items-center gap-1.5 text-slate-300 hover:text-white"><i data-lucide="phone" class="h-3 w-3 text-violet-400"></i>${esc(formatPhone(l.phone))}</a>` : '<p class="flex items-center gap-1.5 text-slate-500"><i data-lucide="phone-off" class="h-3 w-3"></i>Sem telefone</p>'}
+      ${l.notes ? `<p class="line-clamp-2 rounded-md bg-white/[0.03] px-2 py-1.5 text-slate-400">${esc(l.notes)}</p>` : ''}
+    </div>
+    <div class="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5">
+      ${statusSelect(l, '!w-full min-w-0 flex-1')}
+      <div class="flex flex-none gap-0.5">
+        <button class="icon-btn" data-action="lead-edit" data-id="${esc(l.id)}" title="Editar / notas"><i data-lucide="pencil" class="h-3.5 w-3.5"></i></button>
+        <button class="icon-btn" data-action="demo" data-id="${esc(l.id)}" title="Gerar site demo"><i data-lucide="wand-sparkles" class="h-3.5 w-3.5"></i></button>
+        <button class="icon-btn hover:!text-emerald-300" data-action="whats" data-id="${esc(l.id)}" title="Abordar no WhatsApp"><i data-lucide="message-circle" class="h-3.5 w-3.5"></i></button>
+        <button class="icon-btn hover:!text-rose-300" data-action="lead-del" data-id="${esc(l.id)}" title="Remover"><i data-lucide="trash-2" class="h-3.5 w-3.5"></i></button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCRM() {
+  const all = state.leads;
+  const by = (k) => all.filter((l) => l.status === k);
+  const closed = by('fechado');
+  const conv = all.length ? Math.round((closed.length / all.length) * 100) : 0;
+  const revenue = closed.reduce((s, l) => s + (Number(l.value) || 0), 0);
+  const pipeline = all.filter((l) => l.status !== 'fechado').reduce((s, l) => s + (Number(l.value) || 0), 0);
+  const stats = [
+    ['users', 'Total de leads', all.length, 'text-white'],
+    ['message-circle', 'Contatados', by('contatado').length, 'text-violet-300'],
+    ['file-text', 'Propostas', by('proposta').length, 'text-amber-300'],
+    ['badge-check', 'Fechados', closed.length, 'text-emerald-300'],
+    ['trending-up', 'Conversão', conv + '%', 'text-blue-300'],
+    ['wallet', 'Receita fechada', brl(revenue), 'text-emerald-300', `Em negociação: ${brl(pipeline)}`],
+  ];
+  $('#crmStats').innerHTML = stats.map(([ic, l, v, c, sub]) => `<div class="glass rounded-2xl p-4"><div class="flex items-center justify-between"><p class="text-xs text-slate-400">${l}</p><i data-lucide="${ic}" class="h-4 w-4 text-slate-500"></i></div><p class="mt-2 text-2xl font-extrabold tracking-tight ${c}">${v}</p>${sub ? `<p class="mt-0.5 text-[11px] text-slate-500">${sub}</p>` : ''}</div>`).join('');
+  $$('[data-crmview]').forEach((b) => b.classList.toggle('active', b.dataset.crmview === state.crmView));
+
+  const list = crmFiltered();
+  const board = $('#crmBoard');
+  if (!all.length) {
+    board.innerHTML = `<div class="glass rounded-2xl p-10 text-center"><div class="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-violet-500/15 ring-1 ring-violet-400/30"><i data-lucide="inbox" class="h-6 w-6 text-violet-300"></i></div><h3 class="font-bold text-white">Nenhum lead salvo ainda</h3><p class="mt-1 text-sm text-slate-400">Salve negócios a partir da Prospecção ou adicione um lead manualmente.</p><div class="mt-5 flex justify-center gap-2"><button class="btn btn-primary btn-sm" data-action="goto" data-goto="prospect"><i data-lucide="search" class="h-4 w-4"></i>Prospectar</button><button class="btn btn-ghost btn-sm" data-action="lead-new"><i data-lucide="plus" class="h-4 w-4"></i>Novo lead</button></div></div>`;
+    icons(); return;
+  }
+  if (state.crmView === 'kanban') {
+    board.innerHTML = `<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">${STATUSES.map((s) => {
+      const items = list.filter((l) => l.status === s.k);
+      const sum = items.reduce((t, l) => t + (Number(l.value) || 0), 0);
+      return `<div data-drop="${s.k}" class="flex min-h-[320px] flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-3 transition">
+        <div class="mb-3 flex items-center justify-between px-1">
+          <div class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:${s.color};box-shadow:0 0 12px ${s.color}"></span><p class="text-sm font-semibold text-white">${s.label}</p><span class="rounded-md bg-white/[0.06] px-1.5 font-mono text-[11px] text-slate-400">${items.length}</span></div>
+          <span class="font-mono text-[10.5px] text-slate-500">${brl(sum)}</span>
+        </div>
+        <div class="flex flex-1 flex-col gap-2.5">${items.map(leadCard).join('') || `<div class="grid flex-1 place-items-center rounded-xl border border-dashed border-white/[0.08] p-6 text-center text-xs text-slate-500">Arraste leads para cá</div>`}</div>
+      </div>`;
+    }).join('')}</div>`;
+  } else {
+    board.innerHTML = `<div class="glass overflow-x-auto rounded-2xl"><table class="w-full min-w-[860px] text-left text-sm">
+      <thead class="border-b border-white/[0.06] font-mono text-[10.5px] uppercase tracking-wider text-slate-500"><tr><th class="px-4 py-3">Negócio</th><th class="px-4 py-3">Cidade</th><th class="px-4 py-3">Telefone</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Valor</th><th class="px-4 py-3">Atualizado</th><th class="px-4 py-3 text-right">Ações</th></tr></thead>
+      <tbody>${list.map((l) => { const n = nicheOf(l.nicheKey); return `<tr class="border-b border-white/[0.04] hover:bg-white/[0.02]">
+        <td class="px-4 py-3"><div class="flex items-center gap-2.5"><span class="text-lg">${n.emoji}</span><div><p class="font-semibold text-white">${esc(l.name)}</p><p class="text-[11px] text-slate-500">${esc(n.label)}</p></div></div></td>
+        <td class="px-4 py-3 text-slate-300">${esc(l.city)}${l.uf ? '/' + esc(l.uf) : ''}</td>
+        <td class="px-4 py-3 text-slate-300">${l.phone ? esc(formatPhone(l.phone)) : '<span class="text-slate-600">—</span>'}</td>
+        <td class="px-4 py-3">${statusSelect(l)}</td>
+        <td class="px-4 py-3 font-mono text-xs text-emerald-300">${l.value ? brl(l.value) : '—'}</td>
+        <td class="px-4 py-3 text-xs text-slate-500">${new Date(l.updatedAt || l.createdAt).toLocaleDateString('pt-BR')}</td>
+        <td class="px-4 py-3"><div class="flex justify-end gap-1">
+          <button class="icon-btn" data-action="lead-edit" data-id="${esc(l.id)}" title="Editar"><i data-lucide="pencil" class="h-3.5 w-3.5"></i></button>
+          <button class="icon-btn" data-action="demo" data-id="${esc(l.id)}" title="Gerar site"><i data-lucide="wand-sparkles" class="h-3.5 w-3.5"></i></button>
+          <button class="icon-btn" data-action="whats" data-id="${esc(l.id)}" title="WhatsApp"><i data-lucide="message-circle" class="h-3.5 w-3.5"></i></button>
+          <button class="icon-btn hover:!text-rose-300" data-action="lead-del" data-id="${esc(l.id)}" title="Remover"><i data-lucide="trash-2" class="h-3.5 w-3.5"></i></button>
+        </div></td></tr>`; }).join('') || '<tr><td colspan="7" class="px-4 py-8 text-center text-slate-500">Nenhum lead encontrado.</td></tr>'}</tbody></table></div>`;
+  }
+  icons();
+}
+
+function exportCSV() {
+  if (!state.leads.length) return toast('Nenhum lead para exportar', 'warn');
+  const cols = [
+    ['Nome', (l) => l.name], ['Nicho', (l) => nicheOf(l.nicheKey).label], ['Cidade', (l) => l.city], ['UF', (l) => l.uf],
+    ['Endereço', (l) => l.address], ['Telefone', (l) => formatPhone(l.phone)], ['Responsável', (l) => l.contact],
+    ['Status', (l) => (STATUSES.find((s) => s.k === l.status) || {}).label], ['Valor (R$)', (l) => l.value],
+    ['Notas', (l) => l.notes], ['Avaliação', (l) => l.rating], ['Instagram', (l) => l.instagram],
+    ['Latitude', (l) => l.lat], ['Longitude', (l) => l.lon], ['Fonte', (l) => l.source],
+    ['Criado em', (l) => new Date(l.createdAt).toLocaleString('pt-BR')], ['Atualizado em', (l) => new Date(l.updatedAt || l.createdAt).toLocaleString('pt-BR')],
+  ];
+  const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const rows = [cols.map((c) => q(c[0])).join(';'), ...state.leads.map((l) => cols.map((c) => q(c[1](l))).join(';'))];
+  downloadFile('\uFEFF' + rows.join('\r\n'), `leads-localsite-os-${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv;charset=utf-8');
+  toast(`${state.leads.length} leads exportados em CSV`, 'ok');
+}
+
+/* =====================================================================
+   Modais
+   ===================================================================== */
+function openModal(title, body, formId) {
+  $('#modalRoot').innerHTML = `<div class="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" data-action="close-modal" data-backdrop="1">
+    <form id="${formId}" class="modal-in max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-ink-900 p-5 shadow-2xl sm:p-6">
+      <div class="mb-5 flex items-center justify-between"><h3 class="text-lg font-bold text-white">${title}</h3><button type="button" class="icon-btn" data-action="close-modal"><i data-lucide="x" class="h-4 w-4"></i></button></div>
+      ${body}
+    </form></div>`;
+  icons();
+  const first = $('#modalRoot input'); if (first) setTimeout(() => first.focus(), 50);
+}
+function closeModal() { $('#modalRoot').innerHTML = ''; }
+
+function openLeadModal(id) {
+  const l = id ? state.leads.find((x) => x.id === id) : null;
+  const v = l || { name: '', nicheKey: $('#fNiche').value, city: $('#fCity').value, uf: $('#fState').value, phone: '', address: '', contact: '', value: state.settings.price, status: 'novo', notes: '' };
+  const nicheOpts = Object.entries(NICHES).map(([k, n]) => `<option value="${k}" ${k === v.nicheKey ? 'selected' : ''}>${n.emoji} ${n.label}</option>`).join('');
+  const ufOpts = UFS.map(([k]) => `<option ${k === v.uf ? 'selected' : ''}>${k}</option>`).join('');
+  const stOpts = STATUSES.map((s) => `<option value="${s.k}" ${s.k === v.status ? 'selected' : ''}>${s.label}</option>`).join('');
+  openModal(l ? 'Editar lead' : 'Novo lead', `
+    <input type="hidden" name="id" value="${esc(l ? l.id : '')}">
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div class="sm:col-span-2"><label class="label">Nome do negócio *</label><input name="name" required class="field" value="${esc(v.name)}"></div>
+      <div><label class="label">Nicho</label><select name="nicheKey" class="field">${nicheOpts}</select></div>
+      <div><label class="label">Status</label><select name="status" class="field">${stOpts}</select></div>
+      <div><label class="label">Cidade</label><input name="city" class="field" value="${esc(v.city)}"></div>
+      <div><label class="label">UF</label><select name="uf" class="field">${ufOpts}</select></div>
+      <div><label class="label">Telefone / WhatsApp</label><input name="phone" class="field" value="${esc(v.phone)}"></div>
+      <div><label class="label">Responsável</label><input name="contact" class="field" value="${esc(v.contact || '')}"></div>
+      <div class="sm:col-span-2"><label class="label">Endereço</label><input name="address" class="field" value="${esc(v.address)}"></div>
+      <div class="sm:col-span-2"><label class="label">Valor da proposta (R$)</label><input name="value" type="number" min="0" step="1" class="field" value="${esc(v.value)}"></div>
+      <div class="sm:col-span-2"><label class="label">Notas</label><textarea name="notes" rows="3" class="field resize-y" placeholder="Ex: falar com o dono após as 15h">${esc(v.notes)}</textarea></div>
+    </div>
+    <div class="mt-5 flex justify-end gap-2"><button type="button" class="btn btn-ghost btn-sm" data-action="close-modal">Cancelar</button><button type="submit" class="btn btn-primary btn-sm"><i data-lucide="save" class="h-4 w-4"></i>Salvar lead</button></div>`, 'leadForm');
+}
+
+function submitLead(form) {
+  const f = Object.fromEntries(new FormData(form).entries());
+  const now = new Date().toISOString();
+  const data = { name: f.name.trim(), nicheKey: f.nicheKey, status: f.status, city: f.city.trim(), uf: f.uf, phone: f.phone.trim(), contact: f.contact.trim(), address: f.address.trim(), value: Number(f.value) || 0, notes: f.notes.trim(), updatedAt: now };
+  if (!data.name) return toast('Informe o nome do negócio', 'warn');
+  if (f.id) {
+    const l = state.leads.find((x) => x.id === f.id);
+    Object.assign(l, data);
+    toast('Lead atualizado', 'ok');
+  } else {
+    state.leads.unshift({ id: 'man-' + Date.now(), ...data, rating: '', reviews: '', hours: '', instagram: '', lat: null, lon: null, osmUrl: '', source: 'manual', createdAt: now });
+    toast('Lead adicionado', 'ok');
+  }
+  persist(LS_LEADS, state.leads); updateBadge(); closeModal(); renderCRM();
+}
+
+function openSettings() {
+  const s = state.settings;
+  openModal('Meu perfil', `
+    <p class="mb-4 text-sm text-slate-400">Usado nas mensagens de WhatsApp e no rodapé dos sites demonstrativos.</p>
+    <div class="space-y-3">
+      <div><label class="label">Seu nome ou agência</label><input name="devName" class="field" value="${esc(s.devName)}" placeholder="Ex: Lucas Dev Web"></div>
+      <div><label class="label">Seu WhatsApp</label><input name="devPhone" class="field" value="${esc(s.devPhone)}" placeholder="(11) 99999-9999"></div>
+      <div><label class="label">Valor padrão da proposta (R$)</label><input name="price" type="number" min="0" step="1" class="field" value="${esc(s.price)}"></div>
+    </div>
+    <div class="mt-5 flex justify-end gap-2"><button type="button" class="btn btn-ghost btn-sm" data-action="close-modal">Cancelar</button><button type="submit" class="btn btn-primary btn-sm"><i data-lucide="save" class="h-4 w-4"></i>Salvar</button></div>`, 'settingsForm');
+}
+
+function submitSettings(form) {
+  const f = Object.fromEntries(new FormData(form).entries());
+  state.settings = { devName: f.devName.trim(), devPhone: f.devPhone.trim(), price: Number(f.price) || 0 };
+  persist(LS_SET, state.settings);
+  state.wa.me = state.settings.devName; state.wa.price = state.settings.price;
+  closeModal(); toast('Perfil salvo', 'ok');
+  if (state.demo) renderDemo();
+  fillWaForm(); renderTemplates();
+}
+
+/* =====================================================================
+   Eventos
+   ===================================================================== */
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('.tab-btn[data-tab]');
+  if (tab) return switchTab(tab.dataset.tab);
+  const dv = e.target.closest('[data-device]');
+  if (dv) return setDevice(dv.dataset.device);
+  const fd = e.target.closest('[data-fsdev]');
+  if (fd) return setFsDevice(fd.dataset.fsdev);
+  const cv = e.target.closest('[data-crmview]');
+  if (cv) { state.crmView = cv.dataset.crmview; return renderCRM(); }
+  const chip = e.target.closest('[data-chip]');
+  if (chip) { $('#fNiche').value = chip.dataset.chip; renderChips(); return; }
+
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const id = a.dataset.id;
+  switch (a.dataset.action) {
+    case 'goto': return switchTab(a.dataset.goto);
+    case 'demo': return openDemo(id);
+    case 'save': saveLead(id); return renderResults();
+    case 'save-all': return saveAll();
+    case 'whats': return openWhats(id);
+    case 'reverse': return reverseGeocode(id, a);
+    case 'use-sample-demo': return useSampleDemo();
+    case 'preset':
+      if (!state.demo) return;
+      state.demo.color = a.dataset.c1; state.demo.color2 = a.dataset.c2;
+      $('#dColor').value = a.dataset.c1; $('#dColor2').value = a.dataset.c2;
+      return renderDemo();
+    case 'fullscreen': return openFullscreen();
+    case 'close-fs': return closeFullscreen();
+    case 'download': return downloadSite();
+    case 'open-tab': return openSiteInTab();
+    case 'copy-code': return copySiteCode();
+    case 'copy-tpl': {
+      const text = $('#tpl-' + a.dataset.i).value;
+      copyText(text).then((ok) => toast(ok ? 'Mensagem copiada!' : 'Não foi possível copiar', ok ? 'ok' : 'err'));
+      return;
+    }
+    case 'wa-open': return onWaOpen(Number(a.dataset.i));
+    case 'lead-new': return openLeadModal(null);
+    case 'lead-edit': return openLeadModal(id);
+    case 'lead-del': return deleteLead(id);
+    case 'export-csv': return exportCSV();
+    case 'clear-leads':
+      if (!state.leads.length) return toast('O CRM já está vazio', 'info');
+      if (!confirm('Apagar TODOS os leads salvos neste navegador? Exporte o CSV antes se quiser guardar.')) return;
+      state.leads = []; persist(LS_LEADS, state.leads); updateBadge(); renderCRM(); renderResults();
+      return toast('CRM limpo', 'info');
+    case 'open-settings': return openSettings();
+    case 'close-modal':
+      if (a.dataset.backdrop && e.target !== a) return;
+      return closeModal();
+  }
+});
+
+document.addEventListener('submit', (e) => {
+  const f = e.target;
+  if (f.id === 'searchForm') { e.preventDefault(); return searchBusinesses(); }
+  if (f.id === 'leadForm') { e.preventDefault(); return submitLead(f); }
+  if (f.id === 'settingsForm') { e.preventDefault(); return submitSettings(f); }
+});
+
+document.addEventListener('input', (e) => {
+  const el = e.target;
+  if (el.dataset.demo && state.demo) { state.demo[el.dataset.demo] = el.value; return renderDemoDebounced(); }
+  if (el.dataset.wa) { state.wa[el.dataset.wa] = el.value; return renderTemplatesDebounced(); }
+  if (el.dataset.tpl != null) return updateTplLinks(el.dataset.tpl);
+  if (el.id === 'rFilter') { state.filter.text = el.value; return renderResults(); }
+  if (el.id === 'crmSearch') { state.crmSearch = el.value; return renderCRM(); }
+});
+const renderTemplatesDebounced = debounce(() => { const f = document.activeElement; renderTemplates(); if (f && f.id && f.dataset.wa) f.focus(); }, 350);
+
+document.addEventListener('change', (e) => {
+  const el = e.target;
+  if (el.dataset.statusSelect) return setLeadStatus(el.dataset.statusSelect, el.value);
+  if (el.id === 'rPhone') { state.filter.phone = el.checked; return renderResults(); }
+  if (el.id === 'rSort') { state.filter.sort = el.value; return renderResults(); }
+  if (el.id === 'fNiche') return renderChips();
+  if (el.id === 'dPick') { if (el.value) { const b = findBiz(el.value); if (b) { state.demo = demoFromBiz(b); fillDemoForm(); renderDemo(); } } return; }
+  if (el.id === 'wPick') {
+    if (!el.value) { Object.assign(state.wa, { leadId: '', name: '', contact: '', phone: '', city: '', link: '' }); }
+    else { const b = findBiz(el.value); if (b) Object.assign(state.wa, { leadId: b.id, name: b.name, contact: b.contact || '', phone: b.phone || '', nicheKey: b.nicheKey, city: b.city || '', link: suggestLink(b.name) }); }
+    fillWaForm(); return renderTemplates();
+  }
+});
+
+/* Drag and drop do Kanban */
+document.addEventListener('dragstart', (e) => {
+  const c = e.target.closest && e.target.closest('[data-lead]');
+  if (!c) return;
+  e.dataTransfer.setData('text/plain', c.dataset.lead);
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => c.classList.add('opacity-40'), 0);
+});
+document.addEventListener('dragend', (e) => {
+  const c = e.target.closest && e.target.closest('[data-lead]');
+  if (c) c.classList.remove('opacity-40');
+  $$('[data-drop]').forEach((z) => z.classList.remove('drop-hover'));
+});
+document.addEventListener('dragover', (e) => {
+  const z = e.target.closest && e.target.closest('[data-drop]');
+  if (!z) return;
+  e.preventDefault();
+  $$('[data-drop]').forEach((x) => x.classList.toggle('drop-hover', x === z));
+});
+document.addEventListener('drop', (e) => {
+  const z = e.target.closest && e.target.closest('[data-drop]');
+  if (!z) return;
+  e.preventDefault();
+  setLeadStatus(e.dataTransfer.getData('text/plain'), z.dataset.drop);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if ($('#modalRoot').innerHTML) return closeModal();
+  if (!$('#fsOverlay').classList.contains('hidden') && !document.fullscreenElement) closeFullscreen();
+});
+
+/* =====================================================================
+   Inicialização
+   ===================================================================== */
+function renderChips() {
+  const cur = $('#fNiche').value;
+  $('#nicheChips').innerHTML = '<span class="mr-1 self-center font-mono text-[10.5px] uppercase tracking-wider text-slate-500">Atalhos:</span>' +
+    Object.entries(NICHES).slice(0, 10).map(([k, n]) => `<button type="button" class="chip ${k === cur ? 'active' : ''}" data-chip="${k}">${n.emoji} ${n.label}</button>`).join('');
+}
+
+function init() {
+  const nicheOpts = Object.entries(NICHES).map(([k, n]) => `<option value="${k}">${n.emoji}  ${n.label}</option>`).join('');
+  $('#fNiche').innerHTML = nicheOpts;
+  $('#wNiche').innerHTML = nicheOpts;
+  $('#fState').innerHTML = UFS.map(([k, name]) => `<option value="${k}">${k} — ${name}</option>`).join('');
+  const q = load(LS_QUERY, null);
+  $('#fNiche').value = (q && NICHES[q.nicheKey]) ? q.nicheKey : 'hamburgueria';
+  $('#fState').value = (q && UF_NAME[q.uf]) ? q.uf : 'SP';
+  $('#fCity').value = (q && q.city) || '';
+  renderChips();
+  renderResults();
+  fillDemoForm();
+  updateBadge();
+  switchTab((location.hash || '#prospect').slice(1));
+  icons();
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
