@@ -305,7 +305,7 @@
 
   <footer class="mx-auto max-w-7xl px-4 pb-10 pt-4 text-xs text-slate-500 sm:px-6">
     <div class="flex flex-col gap-2 border-t border-white/[0.06] pt-6 sm:flex-row sm:items-center sm:justify-between">
-      <p>LocalSite OS · feito para devs e freelancers que constroem a web local.</p>
+      <p>MenuRadar IA · feito para devs e freelancers que constroem a web local.</p>
       <p>Dados de mapa © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-slate-300">colaboradores do OpenStreetMap</a> (ODbL).</p>
     </div>
   </footer>
@@ -331,7 +331,7 @@
 
 <script>
 /* =====================================================================
-   LocalSite OS — dados de configuração
+   MenuRadar IA — dados de configuração
    ===================================================================== */
 const UFS = [
   ['AC','Acre'],['AL','Alagoas'],['AP','Amapá'],['AM','Amazonas'],['BA','Bahia'],['CE','Ceará'],
@@ -926,7 +926,7 @@ async function searchBusinesses() {
     state.results = items; state.isSample = false;
     setStatus('ok', `<b>${items.length}</b> ${esc(niche.plural)} sem site encontradas em <b>${esc(city)}/${uf}</b>. Fonte: OpenStreetMap.`);
   } catch (err) {
-    console.warn('[LocalSite OS] busca falhou:', err);
+    console.warn('[MenuRadar IA] busca falhou:', err);
     const reason = err && err.name === 'AbortError' ? 'tempo de resposta esgotado' : (err && err.message) || 'erro desconhecido';
     state.results = []; state.isSample = false;
     setStatus('warn', 'Não foi possível obter dados reais agora. Nenhum dado de exemplo será exibido. Tente novamente em instantes.');
