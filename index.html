@@ -536,6 +536,26 @@ const NICHES = {
   },
 };
 
+/* Produtos de exemplo por nicho (formato: Nome | Preço | Descrição | Link da foto) */
+const PRODUCTS_DEFAULT = {
+  hamburgueria: [['Smash Burger','R$ 28,00','Pão brioche, dois smashs de 80 g e queijo cheddar.'],['Cheddar Bacon','R$ 32,00','Blend 160 g, cheddar cremoso e bacon crocante.'],['Batata Rústica','R$ 18,00','Porção para dividir, com molho da casa.'],['Milkshake','R$ 16,00','Chocolate, morango ou ovomaltine.']],
+  pizzaria: [['Margherita','R$ 49,00','Molho de tomate, muçarela, tomate e manjericão.'],['Calabresa','R$ 52,00','Calabresa fatiada, cebola e azeitonas.'],['Quatro Queijos','R$ 58,00','Muçarela, provolone, gorgonzola e parmesão.'],['Chocolate com Morango','R$ 55,00','Pizza doce, tamanho grande.']],
+  barbearia: [['Corte Masculino','R$ 40,00','Tesoura ou máquina, com acabamento na navalha.'],['Barba Completa','R$ 30,00','Toalha quente, navalha e hidratação.'],['Corte + Barba','R$ 65,00','Os dois serviços no mesmo horário.'],['Pomada Modeladora','R$ 35,00','Fixação média, acabamento fosco.']],
+  salao: [['Corte Feminino','R$ 70,00','Lavagem, corte e secagem.'],['Escova','R$ 45,00','Escova modelada, cabelo curto ou médio.'],['Manicure e Pedicure','R$ 55,00','Pacote com esmaltação comum.'],['Hidratação','R$ 80,00','Tratamento com máscara profissional.']],
+  padaria: [['Pão Francês','R$ 14,00 /kg','Assado toda hora.'],['Bolo Caseiro','R$ 12,00 /fatia','Cenoura, fubá ou chocolate.'],['Sonho de Creme','R$ 6,50','Recheio de creme de baunilha.'],['Café da Manhã Completo','R$ 22,00','Pão na chapa, café com leite e fruta.']],
+  restaurante: [['Prato Executivo','R$ 24,00','Arroz, feijão, proteína do dia e salada.'],['Feijoada Completa','R$ 38,00','Aos sábados, com acompanhamentos.'],['Filé à Parmegiana','R$ 42,00','Serve uma pessoa, com arroz e fritas.'],['Pudim','R$ 9,00','Sobremesa da casa.']],
+  lanchonete: [['X-Tudo','R$ 22,00','Hambúrguer, queijo, presunto, ovo, bacon e salada.'],['Misto Quente','R$ 9,00','Pão de forma, queijo e presunto na chapa.'],['Pastel de Carne','R$ 8,00','Frito na hora.'],['Suco Natural','R$ 10,00','Copo de 400 ml, várias frutas.']],
+  cafeteria: [['Espresso','R$ 7,00','Café especial, extração curta.'],['Cappuccino','R$ 14,00','Espresso, leite vaporizado e espuma.'],['Croissant','R$ 12,00','Folhado, manteiga e fermentação lenta.'],['Bolo do Dia','R$ 13,00','Fatia individual, pergunte o sabor.']],
+  petshop: [['Banho e Tosa','R$ 60,00','Cães de porte pequeno, valor a partir de.'],['Ração Premium 10 kg','R$ 189,00','Cães adultos.'],['Petisco Natural','R$ 15,00','Pacote de 100 g.'],['Caminha Média','R$ 99,00','Lavável, capa removível.']],
+  oficina: [['Troca de Óleo','R$ 120,00','Óleo e filtro, mão de obra inclusa.'],['Alinhamento e Balanceamento','R$ 110,00','Para carros de passeio.'],['Revisão de Freios','R$ 150,00','Pastilhas, discos e fluido, valor a partir de.'],['Diagnóstico com Scanner','R$ 90,00','Leitura de falhas eletrônicas.']],
+  academia: [['Plano Mensal','R$ 99,00','Musculação e aeróbicos, acesso livre.'],['Plano Trimestral','R$ 270,00','Valor total, três meses.'],['Aula de Funcional','R$ 30,00','Aula avulsa, turmas pela manhã e à noite.'],['Avaliação Física','R$ 50,00','Medidas, peso e plano de treino.']],
+  lavajato: [['Lavagem Simples','R$ 40,00','Lavagem externa e secagem.'],['Lavagem Completa','R$ 70,00','Externa, interna e aspiração.'],['Higienização de Bancos','R$ 180,00','Limpeza profunda do estofado.'],['Polimento','R$ 250,00','Remoção de riscos leves e brilho.']],
+  floricultura: [['Buquê de Rosas','R$ 90,00','12 rosas, embrulho para presente.'],['Arranjo de Girassóis','R$ 85,00','No vaso de cerâmica.'],['Orquídea','R$ 120,00','Planta no vaso, várias cores.'],['Cesta de Café da Manhã','R$ 150,00','Com cartão, entrega na região.']],
+  sorveteria: [['Açaí 500 ml','R$ 22,00','Com três complementos à escolha.'],['Sorvete por Quilo','R$ 68,00','Vários sabores, preço do quilo.'],['Casquinha','R$ 8,00','Dois sabores.'],['Milkshake','R$ 18,00','400 ml, com cobertura.']],
+  confeitaria: [['Bolo Decorado','R$ 120,00','Bolo de 1 kg, encomenda com 3 dias.'],['Caixa de Brigadeiros','R$ 48,00','Doze unidades, sabores variados.'],['Cupcake','R$ 9,00','Unidade, cobertura de buttercream.'],['Torta de Limão','R$ 14,00','Fatia individual.']],
+};
+function defaultProducts(key) { return (PRODUCTS_DEFAULT[key] || []).map((p) => p.join(' | ')).join('\n'); }
+
 const PRESETS = [
   ['#f97316','#dc2626'],['#dc2626','#15803d'],['#b45309','#1f2937'],['#ec4899','#a855f7'],
   ['#0ea5e9','#1d4ed8'],['#22c55e','#0f172a'],['#a16207','#3f2412'],['#3b82f6','#8b5cf6'],
@@ -666,35 +686,11 @@ async function copyText(text) {
 async function fetchJSON(url, opts = {}, timeout = 20000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeout);
-
   try {
-    const r = await fetch(url, {
-      ...opts,
-      signal: ctrl.signal
-    });
-
-    if (!r.ok) {
-      throw new Error('Servidor respondeu HTTP ' + r.status);
-    }
-
-    const contentType = r.headers.get('content-type') || '';
-
-    if (!contentType.includes('application/json')) {
-      throw new Error('O servidor não retornou JSON válido');
-    }
-
+    const r = await fetch(url, { ...opts, signal: ctrl.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
-
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      throw new Error('Tempo de resposta esgotado');
-    }
-
-    throw error;
-
-  } finally {
-    clearTimeout(t);
-  }
+  } finally { clearTimeout(t); }
 }
 function toast(msg, type = 'ok') {
   const m = { ok: ['check-circle-2', 'text-emerald-300', 'border-emerald-400/25'], warn: ['alert-triangle', 'text-amber-300', 'border-amber-400/25'], err: ['x-circle', 'text-rose-300', 'border-rose-400/25'], info: ['info', 'text-blue-300', 'border-blue-400/25'] }[type] || [];
@@ -923,7 +919,7 @@ async function searchBusinesses() {
     setStatus('loading', `Localizando <b>${esc(city)}/${uf}</b> no mapa…`);
     const place = await geocodeCity(city, uf);
     if (!place) throw new Error('cidade não encontrada no mapa');
-    setStatus('loading', `Consultando o OpenStreetMap: <b>${esc(niche.plural)}</b> em <b>${esc(place.name)}</b> sem site cadastrado… (pode levar alguns segundos)`);
+    setStatus('loading', `Consultando o OpenStreetMap: <b>${esc(niche.plural)}</b> em <b>${esc(place.name)}</b> sem site cadastrado… (pode levar até 1 minuto em cidades grandes)`);
     const els = await overpassSearch(place, niche);
     const seen = new Set();
     const items = els.map((el) => mapElement(el, nicheKey, city, uf)).filter((b) => {
@@ -1155,7 +1151,142 @@ h2.title{font-size:clamp(1.9rem,3.6vw,2.6rem);line-height:1.1}
 .about{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
 .about p{margin-top:18px;font-size:1.05rem}
 .facts{border-top:2px solid var(--ink)}
-.facts li{padding:16px 0;border-bottom:1px
+.facts li{padding:16px 0;border-bottom:1px solid var(--line);font-weight:500;color:var(--ink)}
+.white{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;margin-top:40px}
+.svc li{display:flex;gap:20px;padding:24px 0;border-top:1px solid var(--line)}
+.num{font-family:var(--hf);font-weight:600;color:var(--accent);font-size:1.1rem;min-width:28px;padding-top:2px}
+.svc h3{font-size:1.2rem;margin-bottom:4px}
+.svc p{color:var(--muted);font-size:.96rem}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;margin-top:40px}
+.prod{background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+.prod img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#e9e6df}
+.pb{padding:18px 20px}
+.ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.prod h3{font-size:1.1rem}
+.price{font-weight:700;color:var(--ink);white-space:nowrap;font-size:.95rem}
+.prod p{color:var(--muted);font-size:.94rem;margin-top:6px}
+.pnote{margin-top:24px;font-size:.9rem;color:var(--muted)}
+.pnote a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.contact{display:grid;grid-template-columns:1fr 1.15fr;gap:48px;margin-top:40px;align-items:stretch}
+.info a,.info div.row{display:block;padding:18px 0;border-top:1px solid var(--line)}
+.info small{display:block;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.info strong{display:block;color:var(--ink);font-weight:500;font-size:1.05rem;margin-top:2px;word-break:break-word}
+.info a:hover strong{color:var(--accent)}
+.map{border-radius:8px;overflow:hidden;border:1px solid var(--line);min-height:360px;background:#ece9e1}
+.map iframe{width:100%;height:100%;min-height:360px;border:0;display:block}
+.map-empty{height:100%;min-height:360px;display:grid;place-items:center;text-align:center;padding:30px;color:var(--ink)}
+footer{background:#111;color:#a9a9a9;padding:34px 0;font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap}
+footer a:hover{color:#fff}
+.wa-float{position:fixed;right:18px;bottom:18px;z-index:30;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.28)}
+.wa-float svg{width:30px;height:30px}
+@media (max-width:860px){
+  .strip .wrap span:last-child{display:none}
+  .links a:not(.btn){display:none}
+  .hero .wrap{grid-template-columns:1fr;gap:36px;padding-top:56px;padding-bottom:56px}
+  .about,.contact{grid-template-columns:1fr;gap:36px}
+  .svc{grid-template-columns:1fr}
+  section{padding:64px 0}
+}
+@media (max-width:520px){.cta .btn{flex:1 1 100%}}
+</style>
+</head>
+<body>
+<div class="strip"><div class="wrap"><span>${hours}</span><span>${d.phone ? 'WhatsApp ' + phoneFmt : city}</span></div></div>
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="logo">${name}</a>
+    <nav class="links">
+      <a href="#sobre">Sobre</a>
+      ${products.length ? '<a href="#produtos">Produtos</a>' : ''}
+      <a href="#servicos">Serviços</a>
+      <a href="#contato">Contato</a>
+      <a class="btn btn-sm" href="${wa}"${waAttr}>${WA_SVG} WhatsApp</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="inicio" style="padding:0">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">${esc(n.label)} em ${city}${uf ? ' · ' + uf : ''}</span>
+      <h1>${name}</h1>
+      <p class="lead">${tagline}</p>
+      <div class="cta">
+        <a class="btn" href="${wa}"${waAttr}>${WA_SVG} ${esc(n.cta)}</a>
+        <a class="btn btn-out" href="${products.length ? '#produtos' : '#servicos'}">${products.length ? 'Ver produtos' : 'Ver serviços'}</a>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Informações</h2>
+      <dl class="dl">
+        <div><dt>Endereço</dt><dd>${address}</dd></div>
+        <div><dt>Horário</dt><dd>${hours}</dd></div>
+        <div><dt>WhatsApp</dt><dd>${phoneFmt}</dd></div>${d.rating ? `
+        <div><dt>Avaliação</dt><dd>${esc(d.rating)} de 5</dd></div>` : ''}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="wrap about">
+    <div>
+      <span class="eyebrow">Sobre</span>
+      <h2 class="title">${name}</h2>
+      <p>${about}</p>
+    </div>
+    <ul class="facts">${highlights}</ul>
+  </div>
+</section>
+
+${products.length ? `<section id="produtos" class="${alt()}">
+  <div class="wrap">
+    <span class="eyebrow">Produtos</span>
+    <h2 class="title">Confira nossos produtos</h2>
+    <ul class="prods">${prodHtml}</ul>
+    <p class="pnote">Valores e disponibilidade: <a href="${wa}"${waAttr}>consulte pelo WhatsApp</a>.</p>
+  </div>
+</section>
+
+` : ''}<section id="servicos" class="${alt()}">
+  <div class="wrap">
+    <span class="eyebrow">Serviços</span>
+    <h2 class="title">O que fazemos</h2>
+    <ul class="svc">${services}</ul>
+  </div>
+</section>
+
+<section id="contato" class="${alt()}">
+  <div class="wrap">
+    <span class="eyebrow">Contato</span>
+    <h2 class="title">Onde nos encontrar</h2>
+    <div class="contact">
+      <div class="info">
+        <a href="${wa}"${waAttr}><small>WhatsApp</small><strong>${phoneFmt}</strong></a>
+        <a href="${routeUrl}" target="_blank" rel="noopener"><small>Endereço</small><strong>${address}</strong></a>
+        <div class="row"><small>Horário de funcionamento</small><strong>${hours}</strong></div>
+        ${ig ? `<a href="https://instagram.com/${esc(ig)}" target="_blank" rel="noopener"><small>Instagram</small><strong>@${esc(ig)}</strong></a>` : ''}
+        <div style="padding-top:24px"><a class="btn" style="display:inline-flex;padding:13px 22px;border:2px solid var(--accent)" href="${wa}"${waAttr}>${WA_SVG} Chamar no WhatsApp</a></div>
+      </div>
+      <div class="map">${hasMap ? `<iframe src="${mapSrc}" loading="lazy" title="Mapa de localização"></iframe>` : `<div class="map-empty"><span><strong>${address}</strong><br><a href="${routeUrl}" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">Abrir no Google Maps →</a></span></div>`}</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© ${year} ${name}</span>
+    <span>${city}${uf ? ' - ' + uf : ''}</span>
+    <span>${devCredit}</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="${wa}"${waAttr} aria-label="Fale pelo WhatsApp">${WA_SVG}</a>
+</body>
+</html>`;
+}
 
 function demoFromBiz(b) {
   const n = nicheOf(b.nicheKey);
@@ -1166,6 +1297,7 @@ function demoFromBiz(b) {
     phone: b.phone || '', address: b.address || `${b.city || ''} - ${b.uf || ''}`,
     hours: ptHours(b.hours) || n.hours, instagram: b.instagram || '', rating: b.rating || '',
     color: n.c1, color2: n.c2, city: b.city, uf: b.uf, lat: b.lat, lon: b.lon,
+    products: defaultProducts(b.nicheKey),
   };
 }
 
