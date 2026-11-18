@@ -665,11 +665,35 @@ async function copyText(text) {
 async function fetchJSON(url, opts = {}, timeout = 20000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeout);
+
   try {
-    const r = await fetch(url, { ...opts, signal: ctrl.signal });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const r = await fetch(url, {
+      ...opts,
+      signal: ctrl.signal
+    });
+
+    if (!r.ok) {
+      throw new Error('Servidor respondeu HTTP ' + r.status);
+    }
+
+    const contentType = r.headers.get('content-type') || '';
+
+    if (!contentType.includes('application/json')) {
+      throw new Error('O servidor não retornou JSON válido');
+    }
+
     return await r.json();
-  } finally { clearTimeout(t); }
+
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('Tempo de resposta esgotado');
+    }
+
+    throw error;
+
+  } finally {
+    clearTimeout(t);
+  }
 }
 function toast(msg, type = 'ok') {
   const m = { ok: ['check-circle-2', 'text-emerald-300', 'border-emerald-400/25'], warn: ['alert-triangle', 'text-amber-300', 'border-amber-400/25'], err: ['x-circle', 'text-rose-300', 'border-rose-400/25'], info: ['info', 'text-blue-300', 'border-blue-400/25'] }[type] || [];
