@@ -970,34 +970,43 @@ function cardHTML(b) {
   const tel = waDigits(b.phone);
   const mapUrl = b.osmUrl || (b.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.name + ' ' + b.address)}` : '');
   const addr = b.address
-    ? `<span class="text-slate-300">${esc(b.address)}</span>`
+    ? `<span class="text-slate-200">${esc(b.address)}</span>`
     : `<span class="text-slate-500">Endereço não cadastrado no mapa.</span>${b.lat ? ` <button data-action="reverse" data-id="${b.id}" class="font-medium text-blue-300 underline underline-offset-2 hover:text-blue-200">Descobrir pelo mapa</button>` : ''}`;
-  return `<article class="card-in glass flex flex-col gap-4 rounded-2xl p-5 transition hover:border-green-400/30 hover:bg-white/[0.04]">
-    <div class="flex items-start gap-3">
-      <div class="grid h-12 w-12 flex-none place-items-center rounded-xl text-2xl" style="background:linear-gradient(135deg,${rgba(n.c1, 0.28)},${rgba(n.c2, 0.28)});box-shadow:inset 0 0 0 1px ${rgba(n.c1, 0.35)}">${n.emoji}</div>
+  const row = (icon, tone, content) => `<li class="flex items-start gap-3 px-3.5 py-2.5">
+        <span class="grid h-7 w-7 flex-none place-items-center rounded-lg ${tone}"><i data-lucide="${icon}" class="h-3.5 w-3.5"></i></span>
+        <div class="min-w-0 flex-1 pt-[3px] text-[13px] leading-snug">${content}</div>
+      </li>`;
+  return `<article class="card-in group relative flex flex-col overflow-hidden rounded-[20px] border border-white/[0.08] shadow-xl shadow-black/30 transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:shadow-2xl" style="background:radial-gradient(120% 60% at 0% 0%,${rgba(n.c1, 0.22)},transparent 60%),radial-gradient(90% 50% at 100% 0%,${rgba(n.c2, 0.16)},transparent 65%),#0d0f1d">
+    <div class="relative flex items-start gap-3.5 p-5 pb-4">
+      <div class="grid h-14 w-14 flex-none place-items-center rounded-2xl text-[28px]" style="background:linear-gradient(135deg,${n.c1},${n.c2});box-shadow:0 12px 26px -10px ${rgba(n.c1, 0.9)},inset 0 1px 0 rgba(255,255,255,.35)">${n.emoji}</div>
       <div class="min-w-0 flex-1">
-        <h3 class="truncate text-[15px] font-bold text-white" title="${esc(b.name)}">${esc(b.name)}</h3>
-        <p class="mt-0.5 text-xs text-slate-400">${esc(n.label)} · ${esc(b.city)}/${esc(b.uf)}</p>
+        <h3 class="truncate text-[17px] font-extrabold leading-tight tracking-tight text-white" title="${esc(b.name)}">${esc(b.name)}</h3>
+        <p class="mt-1 truncate text-xs text-slate-400">${esc(n.label)} · ${esc(b.city)}/${esc(b.uf)}</p>
+        <div class="mt-2.5">${b.source === 'demo' ? '<span class="badge-amber">Exemplo</span>' : '<span class="badge-red"><i data-lucide="globe-lock" class="h-3 w-3"></i>Sem site</span>'}</div>
       </div>
-      ${b.source === 'demo' ? '<span class="badge-amber">Exemplo</span>' : '<span class="badge-red"><i data-lucide="globe-lock" class="h-3 w-3"></i>Sem site</span>'}
+      <div class="flex w-[68px] flex-none flex-col items-center text-center" title="Oportunidade: ${scLabel} · ${sc}%">
+        <div class="grid h-[52px] w-[52px] place-items-center rounded-full" style="background:conic-gradient(${n.c1} ${sc * 3.6}deg,rgba(255,255,255,.09) 0);box-shadow:0 0 18px ${rgba(n.c1, 0.35)}">
+          <div class="grid h-[42px] w-[42px] place-items-center rounded-full bg-[#0d0f1d] font-mono text-[12px] font-bold ${scColor}">${sc}%</div>
+        </div>
+        <span class="mt-1.5 font-mono text-[8.5px] uppercase tracking-wider text-slate-500">Oportunidade</span>
+        <span class="font-mono text-[10px] font-bold uppercase tracking-wider ${scColor}">${scLabel}</span>
+      </div>
     </div>
-    <ul class="space-y-2.5 text-sm">
-      <li class="flex gap-2.5"><i data-lucide="map-pin" class="mt-0.5 h-4 w-4 flex-none text-blue-400"></i><div>${addr}</div></li>
-      <li class="flex gap-2.5"><i data-lucide="phone" class="mt-0.5 h-4 w-4 flex-none text-green-400"></i>${b.phone ? `<a href="tel:+${tel}" class="text-slate-200 hover:text-white">${esc(formatPhone(b.phone))}</a>` : '<span class="text-slate-500">Telefone não informado</span>'}</li>
-      <li class="flex gap-2.5"><i data-lucide="star" class="mt-0.5 h-4 w-4 flex-none text-amber-400"></i>${b.rating ? `<span><b class="text-amber-200">${esc(b.rating)}</b> <span class="tracking-tight text-amber-300/90">${stars(b.rating)}</span>${b.reviews ? ` <span class="text-slate-500">(${esc(b.reviews)} avaliações)</span>` : ''}</span>` : '<span class="text-slate-500">Sem avaliações públicas</span>'}</li>
-      ${b.hours ? `<li class="flex gap-2.5"><i data-lucide="clock" class="mt-0.5 h-4 w-4 flex-none text-slate-500"></i><span class="text-slate-400">${esc(ptHours(b.hours))}</span></li>` : ''}
+
+    <ul class="relative mx-4 divide-y divide-white/[0.06] overflow-hidden rounded-xl border border-white/[0.07] bg-black/30">
+      ${row('map-pin', 'bg-blue-500/15 text-blue-300', addr)}
+      ${row('phone', 'bg-green-500/15 text-green-300', b.phone ? `<a href="tel:+${tel}" class="font-semibold text-slate-100 hover:text-white">${esc(formatPhone(b.phone))}</a>` : '<span class="text-slate-500">Telefone não informado</span>')}
+      ${row('star', 'bg-amber-500/15 text-amber-300', b.rating ? `<span><b class="text-amber-200">${esc(b.rating)}</b> <span class="tracking-tight text-amber-300/90">${stars(b.rating)}</span>${b.reviews ? ` <span class="text-slate-500">(${esc(b.reviews)} avaliações)</span>` : ''}</span>` : '<span class="text-slate-500">Sem avaliações públicas</span>')}
+      ${b.hours ? row('clock', 'bg-white/[0.07] text-slate-400', `<span class="text-slate-300">${esc(ptHours(b.hours))}</span>`) : ''}
     </ul>
-    <div>
-      <div class="mb-1.5 flex justify-between font-mono text-[10.5px] uppercase tracking-wider"><span class="text-slate-500">Oportunidade</span><span class="${scColor}">${scLabel} · ${sc}%</span></div>
-      <div class="h-1.5 overflow-hidden rounded-full bg-white/[0.06]"><div class="h-full rounded-full bg-gradient-to-r from-green-500 to-green-500" style="width:${sc}%"></div></div>
-    </div>
-    <div class="mt-auto grid grid-cols-2 gap-2">
+
+    <div class="relative mt-auto grid grid-cols-2 gap-2 px-4 pt-4">
       <button class="btn btn-primary btn-sm" data-action="demo" data-id="${b.id}"><i data-lucide="wand-sparkles" class="h-4 w-4"></i>Gerar Site Demo</button>
       <button class="btn btn-sm ${saved ? 'border border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/15' : 'btn-ghost'}" data-action="save" data-id="${b.id}"><i data-lucide="${saved ? 'bookmark-check' : 'bookmark-plus'}" class="h-4 w-4"></i>${saved ? 'Salvo no CRM' : 'Salvar no CRM'}</button>
     </div>
-    <div class="flex items-center justify-between border-t border-white/[0.06] pt-3 text-xs">
-      <button data-action="whats" data-id="${b.id}" class="inline-flex items-center gap-1.5 font-medium text-emerald-300 hover:text-emerald-200"><i data-lucide="message-circle" class="h-3.5 w-3.5"></i>Abordar no WhatsApp</button>
-      ${mapUrl ? `<a href="${esc(mapUrl)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-slate-400 hover:text-white"><i data-lucide="map" class="h-3.5 w-3.5"></i>Ver no mapa</a>` : ''}
+    <div class="relative flex items-center gap-2 p-4 pt-2.5">
+      <button data-action="whats" data-id="${b.id}" class="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-emerald-400/20 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/20 hover:text-emerald-200"><i data-lucide="message-circle" class="h-3.5 w-3.5"></i>Abordar no WhatsApp</button>
+      ${mapUrl ? `<a href="${esc(mapUrl)}" target="_blank" rel="noopener" class="inline-flex flex-none items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-white/20 hover:text-white"><i data-lucide="map" class="h-3.5 w-3.5"></i>Ver no mapa</a>` : ''}
     </div>
   </article>`;
 }
