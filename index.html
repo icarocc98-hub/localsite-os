@@ -788,7 +788,12 @@ out center;`;
     return data.elements;
   });
 
+  try {
   return await Promise.any(requests);
+} catch (error) {
+  console.error('[MenuRadar IA] Todos os servidores Overpass falharam:', error);
+  throw new Error('Os servidores do OpenStreetMap estão temporariamente indisponíveis. Tente novamente em alguns minutos.');
+}
 }
   function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
