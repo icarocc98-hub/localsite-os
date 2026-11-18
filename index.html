@@ -764,14 +764,21 @@ async function geocodeCity(city, uf) {
 
 async function overpassSearch(place, niche) {
   const [south, west, north, east] = place.bbox;
+  const cacheKey = 'menuradar_op_' + [niche.label, south, west, north, east].join('|');
 
-  const q = `[out:json][timeout:15];
+  // Cache de 24h: evita repetir a consulta pesada
+  try {
+    const c = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (c && Date.now() - c.t < 24 * 3600 * 1000 && Array.isArray(c.d) && c.d.length) return c.d;
+  } catch (e) {}
+
+  const q = `[out:json][timeout:40];
 (
 ${niche.osm.map(f => `nwr${f}["name"](${south},${west},${north},${east});`).join('\n')}
 );
-out center;`;
+out center 400;`;
 
-  const requests = OVERPASS_ENDPOINTS.map(async (ep) => {
+  const tryMirror = async (ep) => {
     const data = await fetchJSON(
       ep,
       {
@@ -779,22 +786,39 @@ out center;`;
         body: 'data=' + encodeURIComponent(q),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       },
-      18000
+      45000
     );
-
-    if (!data || !Array.isArray(data.elements)) {
-      throw new Error('Resposta inválida do OpenStreetMap');
-    }
-
+    if (!data || !Array.isArray(data.elements)) throw new Error('Resposta inválida do OpenStreetMap');
     return data.elements;
-  });
+  };
 
+  // 1) Proxy no Supabase (Edge Function "overpass"), com cache no servidor
   try {
-  return await Promise.any(requests);
-} catch (error) {
-  console.error('[MenuRadar IA] Todos os servidores Overpass falharam:', error);
-  throw new Error('Os servidores do OpenStreetMap estão temporariamente indisponíveis. Tente novamente em alguns minutos.');
-}
+    const { data, error } = await supabaseClient.functions.invoke('overpass', { body: { query: q, key: cacheKey } });
+    if (!error && data && Array.isArray(data.elements)) {
+      try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), d: data.elements })); } catch (e) {}
+      return data.elements;
+    }
+    console.warn('[MenuRadar IA] Edge Function indisponível, usando busca direta:', error || data);
+  } catch (e) {
+    console.warn('[MenuRadar IA] Edge Function falhou, usando busca direta:', e);
+  }
+
+  // 2) Plano B: busca direta nos espelhos da Overpass
+  let lastErr;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const els = await Promise.any(OVERPASS_ENDPOINTS.map(tryMirror));
+      try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), d: els })); } catch (e) {}
+      return els;
+    } catch (error) {
+      lastErr = error;
+      console.warn('[MenuRadar IA] Tentativa ' + (attempt + 1) + ' falhou nos servidores Overpass:', error);
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 2500));
+    }
+  }
+  console.error('[MenuRadar IA] Todos os servidores Overpass falharam:', lastErr);
+  throw new Error('Os servidores do OpenStreetMap estão sobrecarregados no momento. Tente novamente em alguns minutos.');
 }
   function mapElement(el, nicheKey, city, uf) {
   const t = el.tags || {};
