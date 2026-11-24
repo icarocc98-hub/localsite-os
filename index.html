@@ -86,6 +86,45 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .modal-in { animation: modalIn .25s cubic-bezier(.2,.7,.2,1) both; }
     @keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+  /* Melhorias profissionais de acessibilidade e mobile */
+*:focus-visible {
+  outline: 2px solid #22c55e;
+  outline-offset: 3px;
+}
+
+.btn,
+.tab-btn,
+.icon-btn {
+  min-height: 44px;
+}
+
+.icon-btn {
+  min-width: 44px;
+}
+
+@media (max-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+
+  .tab-btn {
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
   </style>
 </head>
 <body class="min-h-screen font-sans text-slate-200 antialiased selection:bg-green-500/30">
